@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>神魔之塔轉珠模擬online</title>
+	<meta charset="UTF-8">
+</head>
+<body bgcolor="#ccccff" onload="preProcess();">
+ 
+<style type="text/css">
+	#title			{   position:absolute; top:0px; left:20px; width:100%; height:100px;}
+	#skill_hint		{   position:absolute; top:140px; left:28px; width:480px; height:30px;}
+	#player_hint	{   position:absolute; left:0px; width:240px; height:30px;}
+	#enemy_hint		{   position:absolute; right:0px; width:240px; height:30px;}
+	#board			{   position:absolute; top:180px; left:20px;}
+	#board_canvas	{   position:absolute; top:188px; left:28px;}
+	#time_prog		{   position:absolute; top:650px; left:20px; width:520px; height:30px;}
+	#urlProcess		{   position:absolute; top:690px; left:20px; width:500px; height:30px;}
+	
+	#modeSelect		{   position:absolute; top:120px; left:600px; width:650px; height:480px;}
+	
+	#movePanel		{   position:absolute; top:180px; left:600px; width:650px; height:580px;}
+	#stepCount		{   position:absolute; top:20px; left:20px; width:300px; height:50px;}
+	#timer			{   position:absolute; top:90px; left:20px; width:300px; height:50px;}
+	#combo_f		{   position:absolute; top:160px; left:20px; width:300px; height:50px;}
+	#combo_n		{   position:absolute; top:230px; left:20px; width:300px; height:50px;}
+	#combo			{   position:absolute; top:300px; left:20px; width:300px; height:50px;}
+	#reset			{   position:absolute; top:380px; left:20px; width:150px; height:60px;}
+	#random			{   position:absolute; top:380px; left:180px; width:150px; height:60px;}
+	#replay			{   position:absolute; top:380px; left:340px; width:150px; height:60px;}
+	#timeControl	{   position:absolute; top:20px; left:350px; width:250px; height:80px;}
+	#dissolveControl{   position:absolute; top:140px; left:350px; width:250px; height:80px;}
+	#moveControl	{   position:absolute; top:260px; left:350px; width:250px; height:80px;}
+	#dissolveResult	{   position:absolute; top:470px; left:20px; height:80px;}
+	#dissolveNumber	{   position:absolute; top:540px; left:20px; height:40px;}
+	
+	#editPanel		{   position:absolute; top:180px; left:600px; width:650px; height:580px;}
+	#chart0			{   position:absolute; top:20px; left:20px;}
+	#chart1			{   position:absolute; top:80px; left:20px;}
+	#chart2			{   position:absolute; top:80px; left:280px;}
+	
+	#resultPanel	{   position:absolute; top:180px; left:600px; width:650px; height:580px;}
+	
+	#editSkill		{   position:absolute; top:180px; left:600px; width:650px; height:580px;}
+	#skill_sel		{   position:absolute; top:20px; left:20px;}
+	#enemySkill		{   position:absolute; top:100px; left:20px; width:610px;}
+	#playerSkill	{   position:absolute; top:100px; left:20px; width:610px;}
+	
+    tr img          {   display:block; margin:auto;}
+	.st			    {   width:84px; height:84px; padding:0px; border:0px; background-size:84px 84px;}
+	.et			    {   width:120px; height:120px; position:relative;}
+	.btn2			{
+						border-radius: 15px;
+						margin: 0px;
+						-webkit-transition: 0.1s linear;
+						-webkit-transition-property: -webkit-transform margin;
+					}
+	.btn2:hover		{
+						margin: 0px;
+						-webkit-transform: scale(1.1);
+					}
+    .asklbtn		{
+						-webkit-transition: 0.1s linear;
+						-webkit-transition-property: -webkit-transform margin;
+					}
+	.asklbtn:hover	{
+						-webkit-transform: scale(1.1);
+					}
+	.skldiv			{   width:610px; height:370px; border:3px solid #0066FF;}
+    
+    .sklbtn0		{
+						background-color:transparent;
+                        border-radius: 10px;
+                        border-style:double;
+                    }
+    .sklbtn1		{
+						background-color:transparent;
+                        color:#00FF00;
+                        border-radius: 10px;
+                        border:3px #00FF00 double;
+                        -webkit-transition: 0.5s ease;
+                        -webkit-transition-property: -webkit-transform background-color;
+                    }
+	.sklbtn1:hover	{
+						background-color: rgba(0, 136, 0, 0.6);
+					}
+    .sklbtn2		{
+						background-color:transparent;
+                        color:#00FFFF;
+                        border-radius: 10px;
+                        border:3px #00FFFF double;
+                        -webkit-transition: 0.5s ease;
+                        -webkit-transition-property: -webkit-transform background-color;
+                    }
+	.sklbtn2:hover	{
+						background-color: rgba(0, 0, 255, 0.6);
+					}
+    .sklbtn3		{
+						background-color:transparent;
+                        color:#FFFF00;
+                        border-radius: 10px;
+                        border:3px #FFFF00 double;
+                        -webkit-transition: 0.5s ease;
+                        -webkit-transition-property: -webkit-transform background-color;
+                    }
+	.sklbtn3:hover	{
+						background-color: rgba(255, 136, 0, 0.6);
+					}
+    .sklbtn4		{
+						background-color:transparent;
+                        color:#FF0000;
+                        border-radius: 10px;
+                        border:3px #FF0000 double;
+                        -webkit-transition: 0.5s ease;
+                        -webkit-transition-property: -webkit-transform background-color;
+                    }
+	.sklbtn4:hover	{
+						background-color: rgba(136, 0, 0, 0.6);
+					}
+    .sklbtn5		{
+						background-color:transparent;
+                        color:#9955FF;
+                        border-radius: 10px;
+                        border:3px #9955FF double;
+                        -webkit-transition: 0.5s ease;
+                        -webkit-transition-property: -webkit-transform background-color;
+                    }
+	.sklbtn5:hover	{
+						background-color: rgba(119, 0, 187, 0.6);
+					}
+    .sklbtn6		{
+						background-color:transparent;
+                        color:#FF88C2;
+                        border-radius: 10px;
+                        border:3px #FF88C2 double;
+                        -webkit-transition: 0.5s ease;
+                        -webkit-transition-property: -webkit-transform background-color;
+                    }
+	.sklbtn6:hover	{
+						background-color: rgba(228, 102, 182, 0.6);
+					}
+    .sklbtn7		{
+						background-color:transparent;
+                        color:#FFFFFF;
+                        border-radius: 10px;
+                        border:3px #FFFFFF double;
+                        -webkit-transition: 0.5s ease;
+                        -webkit-transition-property: -webkit-transform background-color;
+                    }
+	.sklbtn7:hover	{
+						background-color: rgba(136, 136, 136, 0.6);
+					}
+                    
+</style>
+
+<script type="text/javascript" language="javascript" src="simulator_setting_v2.js" charset="UTF-8"></script>
+
+<div style="background-image:url(./img/background.png); position:fixed; top:0; left:0; width:100%; height:100%;"></div>
+	<div id="title" align="center" style="font:bold 50pt 微軟正黑體; color:#FFFF33; cursor:default;">
+		<img align="center" src="./img/tosmark.png" width=350 style="" />轉珠模擬器
+	</div>
+</div>
+
+<!--
+<div style="position:absolute;top:0px;left:0px;width:100%">
+	<a href="./tos_reduction.html" style="text-decoration:none;" target="tos_reduction">
+		<img align="left" title="大聖減傷計算器" src="./img/dasheng_1.png" width=280 style="width:60px;linear-gradient:visibility:visible;" />
+	</a>
+	<a href="./tos_trojan.html" style="text-decoration:none;" target="tos_trojan">
+		<img align="left" title="越戰越強計算器" src="./img/trojan.png" width=280 style="width:60px;linear-gradient:visibility:visible;" />
+	</a>
+</div>
+-->
+
+<div id="skill_hint" align="center">
+	<span id="player_hint" align="left"></span>
+	<span id="enemy_hint" align="right"></span>
+</div>
+
+<div id="board" style="cursor:pointer;">
+    <!--<div id="p1" class="st" style="position:inherit; top:0px; left:0px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(1)"><img id="img1" onload="Init(1)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(1)" onMouseUp="Release()" onDragEnd="StopMove(1)" onClick="Edit(1)"></div>
+	<div id="p2" class="st" style="position:inherit; top:0px; left:80px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(2)"><img id="img2" onload="Init(2)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(2)" onMouseUp="Release()" onDragEnd="StopMove(2)" onClick="Edit(2)"></div>
+	<div id="p3" class="st" style="position:inherit; top:0px; left:160px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(3)"><img id="img3" onload="Init(3)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(3)" onMouseUp="Release()" onDragEnd="StopMove(3)" onClick="Edit(3)"></div>
+	<div id="p4" class="st" style="position:inherit; top:0px; left:240px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(4)"><img id="img4" onload="Init(4)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(4)" onMouseUp="Release()" onDragEnd="StopMove(4)" onClick="Edit(4)"></div>
+	<div id="p5" class="st" style="position:inherit; top:0px; left:320px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(5)"><img id="img5" onload="Init(5)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(5)" onMouseUp="Release()" onDragEnd="StopMove(5)" onClick="Edit(5)"></div>
+	<div id="p6" class="st" style="position:inherit; top:0px; left:400px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(6)"><img id="img6" onload="Init(6)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(6)" onMouseUp="Release()" onDragEnd="StopMove(6)" onClick="Edit(6)"></div>
+	
+    <div id="p7" class="st" style="position:inherit; top:80px; left:0px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(7)"><img id="img7" onload="Init(7)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(7)" onMouseUp="Release()" onDragEnd="StopMove(7)" onClick="Edit(7)"></div>
+	<div id="p8" class="st" style="position:inherit; top:80px; left:80px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(8)"><img id="img8" onload="Init(8)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(8)" onMouseUp="Release()" onDragEnd="StopMove(8)" onClick="Edit(8)"></div>
+	<div id="p9" class="st" style="position:inherit; top:80px; left:160px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(9)"><img id="img9" onload="Init(9)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(9)" onMouseUp="Release()" onDragEnd="StopMove(9)" onClick="Edit(9)"></div>
+	<div id="p10" class="st" style="position:inherit; top:80px; left:240px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(10)"><img id="img10" onload="Init(10)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(10)" onMouseUp="Release()" onDragEnd="StopMove(10)" onClick="Edit(10)"></div>
+	<div id="p11" class="st" style="position:inherit; top:80px; left:320px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(11)"><img id="img11" onload="Init(11)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(11)" onMouseUp="Release()" onDragEnd="StopMove(11)" onClick="Edit(11)"></div>
+	<div id="p12" class="st" style="position:inherit; top:80px; left:400px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(12)"><img id="img12" onload="Init(12)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(12)" onMouseUp="Release()" onDragEnd="StopMove(12)" onClick="Edit(12)"></div>
+	
+    <div id="p13" class="st" style="position:inherit; top:160px; left:0px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(13)"><img id="img13" onload="Init(13)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(13)" onMouseUp="Release()" onDragEnd="StopMove(13)" onClick="Edit(13)"></div>
+	<div id="p14" class="st" style="position:inherit; top:160px; left:80px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(14)"><img id="img14" onload="Init(14)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(14)" onMouseUp="Release()" onDragEnd="StopMove(14)" onClick="Edit(14)"></div>
+	<div id="p15" class="st" style="position:inherit; top:160px; left:160px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(15)"><img id="img15" onload="Init(15)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(15)" onMouseUp="Release()" onDragEnd="StopMove(15)" onClick="Edit(15)"></div>
+	<div id="p16" class="st" style="position:inherit; top:160px; left:240px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(16)"><img id="img16" onload="Init(16)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(16)" onMouseUp="Release()" onDragEnd="StopMove(16)" onClick="Edit(16)"></div>
+	<div id="p17" class="st" style="position:inherit; top:160px; left:320px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(17)"><img id="img17" onload="Init(17)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(17)" onMouseUp="Release()" onDragEnd="StopMove(17)" onClick="Edit(17)"></div>
+	<div id="p18" class="st" style="position:inherit; top:160px; left:400px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(18)"><img id="img18" onload="Init(18)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(18)" onMouseUp="Release()" onDragEnd="StopMove(18)" onClick="Edit(18)"></div>
+	
+    <div id="p19" class="st" style="position:inherit; top:240px; left:0px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(19)"><img id="img19" onload="Init(19)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(19)" onMouseUp="Release()" onDragEnd="StopMove(19)" onClick="Edit(19)"></div>
+	<div id="p20" class="st" style="position:inherit; top:240px; left:80px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(20)"><img id="img20" onload="Init(20)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(20)" onMouseUp="Release()" onDragEnd="StopMove(20)" onClick="Edit(20)"></div>
+	<div id="p21" class="st" style="position:inherit; top:240px; left:160px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(21)"><img id="img21" onload="Init(21)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(21)" onMouseUp="Release()" onDragEnd="StopMove(21)" onClick="Edit(21)"></div>
+	<div id="p22" class="st" style="position:inherit; top:240px; left:240px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(22)"><img id="img22" onload="Init(22)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(22)" onMouseUp="Release()" onDragEnd="StopMove(22)" onClick="Edit(22)"></div>
+	<div id="p23" class="st" style="position:inherit; top:240px; left:320px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(23)"><img id="img23" onload="Init(23)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(23)" onMouseUp="Release()" onDragEnd="StopMove(23)" onClick="Edit(23)"></div>
+	<div id="p24" class="st" style="position:inherit; top:240px; left:400px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(24)"><img id="img24" onload="Init(24)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(24)" onMouseUp="Release()" onDragEnd="StopMove(24)" onClick="Edit(24)"></div>
+	
+    <div id="p25" class="st" style="position:inherit; top:320px; left:0px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(25)"><img id="img25" onload="Init(25)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(25)" onMouseUp="Release()" onDragEnd="StopMove(25)" onClick="Edit(25)"></div>
+	<div id="p26" class="st" style="position:inherit; top:320px; left:80px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(26)"><img id="img26" onload="Init(26)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(26)" onMouseUp="Release()" onDragEnd="StopMove(26)" onClick="Edit(26)"></div>
+	<div id="p27" class="st" style="position:inherit; top:320px; left:160px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(27)"><img id="img27" onload="Init(27)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(27)" onMouseUp="Release()" onDragEnd="StopMove(27)" onClick="Edit(27)"></div>
+	<div id="p28" class="st" style="position:inherit; top:320px; left:240px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(28)"><img id="img28" onload="Init(28)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(28)" onMouseUp="Release()" onDragEnd="StopMove(28)" onClick="Edit(28)"></div>
+	<div id="p29" class="st" style="position:inherit; top:320px; left:320px; width:80px; height:80px; background-image:url(./img/board_back_1.png); background-size:80px 80px;" ondragenter="Change(29)"><img id="img29" onload="Init(29)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(29)" onMouseUp="Release()" onDragEnd="StopMove(29)" onClick="Edit(29)"></div>
+	<div id="p30" class="st" style="position:inherit; top:320px; left:400px; width:80px; height:80px; background-image:url(./img/board_back_2.png); background-size:80px 80px;" ondragenter="Change(30)"><img id="img30" onload="Init(30)" src="./img/stone_n.png" draggable="true" onMouseDown="StartMove(30)" onMouseUp="Release()" onDragEnd="StopMove(30)" onClick="Edit(30)"></div>
+	-->
+    <table align="center" rules="none" style="border:8px #000 solid;">
+		<tr>
+			<td id="p1" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img1" onload="Init(1)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(1)" ondragleave="Change_out(1)" onMouseDown="StartMove(1)" onMouseUp="Release()" onDragEnd="StopMove(1)" onClick="Edit(1)"></td>
+            <td id="p2" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img2" onload="Init(2)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(2)" ondragleave="Change_out(2)" onMouseDown="StartMove(2)" onMouseUp="Release()" onDragEnd="StopMove(2)" onClick="Edit(2)"></td>
+			<td id="p3" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img3" onload="Init(3)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(3)" ondragleave="Change_out(3)" onMouseDown="StartMove(3)" onMouseUp="Release()" onDragEnd="StopMove(3)" onClick="Edit(3)"></td>
+			<td id="p4" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img4" onload="Init(4)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(4)" ondragleave="Change_out(4)" onMouseDown="StartMove(4)" onMouseUp="Release()" onDragEnd="StopMove(4)" onClick="Edit(4)"></td>
+			<td id="p5" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img5" onload="Init(5)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(5)" ondragleave="Change_out(5)" onMouseDown="StartMove(5)" onMouseUp="Release()" onDragEnd="StopMove(5)" onClick="Edit(5)"></td>
+			<td id="p6" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img6" onload="Init(6)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(6)" ondragleave="Change_out(6)" onMouseDown="StartMove(6)" onMouseUp="Release()" onDragEnd="StopMove(6)" onClick="Edit(6)"></td>
+		</tr>
+		<tr>
+			<td id="p7" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img7" onload="Init(7)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(7)" ondragleave="Change_out(7)" onMouseDown="StartMove(7)" onMouseUp="Release()" onDragEnd="StopMove(7)" onClick="Edit(7)"></td>
+			<td id="p8" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img8" onload="Init(8)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(8)" ondragleave="Change_out(8)" onMouseDown="StartMove(8)" onMouseUp="Release()" onDragEnd="StopMove(8)" onClick="Edit(8)"></td>
+			<td id="p9" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img9" onload="Init(9)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(9)" ondragleave="Change_out(9)" onMouseDown="StartMove(9)" onMouseUp="Release()" onDragEnd="StopMove(9)" onClick="Edit(9)"></td>
+			<td id="p10" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img10" onload="Init(10)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(10)" ondragleave="Change_out(10)" onMouseDown="StartMove(10)" onMouseUp="Release()" onDragEnd="StopMove(10)" onClick="Edit(10)"></td>
+			<td id="p11" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img11" onload="Init(11)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(11)" ondragleave="Change_out(11)" onMouseDown="StartMove(11)" onMouseUp="Release()" onDragEnd="StopMove(11)" onClick="Edit(11)"></td>
+			<td id="p12" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img12" onload="Init(12)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(12)" ondragleave="Change_out(12)" onMouseDown="StartMove(12)" onMouseUp="Release()" onDragEnd="StopMove(12)" onClick="Edit(12)"></td>
+		</tr>
+		<tr style="height:80px;">
+			<td id="p13" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img13" onload="Init(13)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(13)" ondragleave="Change_out(13)" onMouseDown="StartMove(13)" onMouseUp="Release()" onDragEnd="StopMove(13)" onClick="Edit(13)"></td>
+			<td id="p14" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img14" onload="Init(14)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(14)" ondragleave="Change_out(14)" onMouseDown="StartMove(14)" onMouseUp="Release()" onDragEnd="StopMove(14)" onClick="Edit(14)"></td>
+			<td id="p15" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img15" onload="Init(15)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(15)" ondragleave="Change_out(15)" onMouseDown="StartMove(15)" onMouseUp="Release()" onDragEnd="StopMove(15)" onClick="Edit(15)"></td>
+			<td id="p16" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img16" onload="Init(16)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(16)" ondragleave="Change_out(16)" onMouseDown="StartMove(16)" onMouseUp="Release()" onDragEnd="StopMove(16)" onClick="Edit(16)"></td>
+			<td id="p17" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img17" onload="Init(17)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(17)" ondragleave="Change_out(17)" onMouseDown="StartMove(17)" onMouseUp="Release()" onDragEnd="StopMove(17)" onClick="Edit(17)"></td>
+			<td id="p18" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img18" onload="Init(18)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(18)" ondragleave="Change_out(18)" onMouseDown="StartMove(18)" onMouseUp="Release()" onDragEnd="StopMove(18)" onClick="Edit(18)"></td>
+		</tr>
+		<tr>
+			<td id="p19" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img19" onload="Init(19)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(19)" ondragleave="Change_out(19)" onMouseDown="StartMove(19)" onMouseUp="Release()" onDragEnd="StopMove(19)" onClick="Edit(19)"></td>
+			<td id="p20" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img20" onload="Init(20)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(20)" ondragleave="Change_out(20)" onMouseDown="StartMove(20)" onMouseUp="Release()" onDragEnd="StopMove(20)" onClick="Edit(20)"></td>
+			<td id="p21" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img21" onload="Init(21)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(21)" ondragleave="Change_out(21)" onMouseDown="StartMove(21)" onMouseUp="Release()" onDragEnd="StopMove(21)" onClick="Edit(21)"></td>
+			<td id="p22" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img22" onload="Init(22)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(22)" ondragleave="Change_out(22)" onMouseDown="StartMove(22)" onMouseUp="Release()" onDragEnd="StopMove(22)" onClick="Edit(22)"></td>
+			<td id="p23" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img23" onload="Init(23)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(23)" ondragleave="Change_out(23)" onMouseDown="StartMove(23)" onMouseUp="Release()" onDragEnd="StopMove(23)" onClick="Edit(23)"></td>
+			<td id="p24" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img24" onload="Init(24)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(24)" ondragleave="Change_out(24)" onMouseDown="StartMove(24)" onMouseUp="Release()" onDragEnd="StopMove(24)" onClick="Edit(24)"></td>
+		</tr>
+		<tr>
+			<td id="p25" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img25" onload="Init(25)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(25)" ondragleave="Change_out(25)" onMouseDown="StartMove(25)" onMouseUp="Release()" onDragEnd="StopMove(25)" onClick="Edit(25)"></td>
+			<td id="p26" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img26" onload="Init(26)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(26)" ondragleave="Change_out(26)" onMouseDown="StartMove(26)" onMouseUp="Release()" onDragEnd="StopMove(26)" onClick="Edit(26)"></td>
+			<td id="p27" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img27" onload="Init(27)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(27)" ondragleave="Change_out(27)" onMouseDown="StartMove(27)" onMouseUp="Release()" onDragEnd="StopMove(27)" onClick="Edit(27)"></td>
+			<td id="p28" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img28" onload="Init(28)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(28)" ondragleave="Change_out(28)" onMouseDown="StartMove(28)" onMouseUp="Release()" onDragEnd="StopMove(28)" onClick="Edit(28)"></td>
+			<td id="p29" class="st" style="background-image:url(./img/board_back_1.png);"><img id="img29" onload="Init(29)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(29)" ondragleave="Change_out(29)" onMouseDown="StartMove(29)" onMouseUp="Release()" onDragEnd="StopMove(29)" onClick="Edit(29)"></td>
+			<td id="p30" class="st" style="background-image:url(./img/board_back_2.png);"><img id="img30" onload="Init(30)" src="./img/stone_n.png" draggable="true" ondragstart="Drag(event)" ondragenter="Change(30)" ondragleave="Change_out(30)" onMouseDown="StartMove(30)" onMouseUp="Release()" onDragEnd="StopMove(30)" onClick="Edit(30)"></td>
+		</tr>
+	</table>
+</div>
+<canvas id="board_canvas" width="492" height="430" style="border:1px solid #FFFFFF; display:none;"></canvas>
+
+<progress id="time_prog" max=100 value=100 style="background-color:#33FF33;"></progress>
+
+<div id="urlProcess" style="width:540px;">
+	<input id="getURL" class="btn2" type="submit" value="產生網址" onclick="GetURLCode();" style="font:25pt 微軟正黑體; color:#FFFFFF; border:3px #FFB7DD solid; padding:5px; background-color:#FF3333; cursor:pointer;">
+	&nbsp;&nbsp;&nbsp;
+	<input id="URLtext" type="text" value="convert_URL" readOnly="true" size="22" style="font:20pt 微軟正黑體; color:#FFFFFF; border:3px #FFFFFF solid; padding:5px; background-color:#000000; display:none; cursor:text;">
+</div>
+
+<div id="modeSelect" style="">
+	<input id="moveMode" type="submit" value="轉珠模式" onclick="ChangeMode(0);" style="font:25pt 微軟正黑體; color:#FFFFFF; border:3px #FFDDAA solid; padding:5px; background-color:#FF5511; cursor:pointer;">
+	<input id="resultMode" type="submit" value="消除結果" onclick="ChangeMode(3);" style="font:25pt 微軟正黑體; color:#FFFFFF; border:3px #FFDDAA solid; padding:5px; background-color:#FFBB66; cursor:pointer;">
+	<input id="editMode1" type="submit" value="編輯版面" onclick="ChangeMode(1);" style="font:25pt 微軟正黑體; color:#FFFFFF; border:3px #F0BBFF solid; padding:5px; background-color:#D28EFF; cursor:pointer;">
+	<input id="editMode2" type="submit" value="設定技能" onclick="ChangeMode(2);" style="font:25pt 微軟正黑體; color:#FFFFFF; border:3px #F0BBFF solid; padding:5px; background-color:#D28EFF; cursor:pointer;">
+</div>
+
+<div id="movePanel" style="display:inline; border:3px #0066FF solid;">
+	<div id="stepCount" align="left" style="font:bold 30pt 微軟正黑體; color:#FFFF00; cursor:default;">
+		步數：0
+	</div>
+	<div id="timer" align="left" style="font:bold 30pt 微軟正黑體; color:#FFFF00; cursor:default;">
+		剩餘 
+	</div>
+	<script type="text/javascript">
+		document.getElementById("timer").innerHTML = '剩餘 '+(move_time/1000).toFixed(1)+' 秒';
+	</script>
+	<div id="combo_f" align="left" style="font:bold 30pt 微軟正黑體; color:#0000CC; border:5px #0000CC double; background-color:#99BBFF; cursor:default;">
+		首消 0 Combo
+	</div>
+	<div id="combo_n" align="left" style="font:bold 30pt 微軟正黑體; color:#008800; border:5px #008800 double; background-color:#CCFF99; cursor:default;">
+		疊珠 0 Combo
+	</div>
+	<div id="combo" align="left" style="font:bold 30pt 微軟正黑體; color:#FF0000; border:5px #FF0000 double; background-color:#FFCCCC; cursor:default;">
+		合計 0 Combo
+	</div>
+	<div id="timeControl" align="middle" style="font:bold 20pt 微軟正黑體; color:#FFFF00; border:5px #0044BB double; padding:5px;">
+		<span id="timeSpan" style="cursor:default;">轉珠時間：5 秒<br></span>
+		<input id="timeSlider" type="range" value="5" max="30" min="1" step="1" onchange="MoveTimeControl(this.value);">
+	</div>
+	<div id="dissolveControl" align="middle" style="font:bold 20pt 微軟正黑體; color:#FFFF00; border:5px #0044BB double; padding:5px;">
+		<span id="dissolveSpan" style="cursor:default;">消除模式：一般<br></span>
+		<select id="dissolveSelector" onchange="DissolveModeControl(this.value);" style="width:160px; height:30px; font-size:18px; color:#000000;">
+			<option value="0" style="color:#000000;" selected>一般</option>
+			<option value="1" style="color:#000000;">三消</option>
+			<option value="2" style="color:#000000;">火二消</option>
+			<option value="3" style="color:#000000;">木二消</option>
+			<option value="4" style="color:#000000;">火木二消</option>
+			<option value="5" style="color:#000000;">二消</option>
+			<option value="6" style="color:#000000;">四消</option>
+		</select>
+	</div>
+	<div id="moveControl" align="middle" style="font:bold 20pt 微軟正黑體; color:#FFFF00; border:5px #0044BB double; padding:5px;">
+		<span id="moveSpan" style="cursor:default;">轉珠模式：一般<br></span>
+		<select id="moveSelector" onchange="MoveModeControl(this.value);" style="width:160px; height:30px; font-size:18px; color:#000000;">
+			<option value="0" style="color:#000000;" selected>一般</option>
+			<option value="1" style="color:#000000;">排珠</option>
+		</select>
+	</div>
+	
+	<div style="position:absolute; top:100; left:700;">
+		<input id="reset" class="btn2" type="submit" value="重&nbsp;&nbsp;置" onclick="Reset();" style="font:25pt 微軟正黑體; color:#FFFFFF; border:3px #FFDDAA solid; padding:5px; background-color:#FF5511; box-shadow:5px 5px 10px #FF5511; cursor:pointer;">
+		<input id="random" class="btn2" type="submit" value="隨機版面" onclick="Random();" style="font:25pt 微軟正黑體; color:#FFFFFF; border:3px #D28EFF solid; padding:5px; background-color:#7700BB; box-shadow:5px 5px 10px #7700BB; cursor:pointer;">
+		<input id="replay" class="btn2" type="submit" value="播放路徑" onclick="Replay();" style="font:25pt 微軟正黑體; color:#FFFFFF; border:3px #99FF99 solid; padding:5px; background-color:#00AA00; box-shadow:5px 5px 10px #008800; cursor:pointer;">
+	</div>
+	
+	
+	<div id="dissolveResult" style="">
+		<table align="center" rules="none" style="">
+			<tr>
+				<td align="center" background="./img/stone_w.png" style="width:80px; height:80px; background-repeat:no-repeat; opacity:0.5;"></td>
+				<td align="center" background="./img/stone_f.png" style="width:80px; height:80px; background-repeat:no-repeat; opacity:0.5;"></td>
+				<td align="center" background="./img/stone_e.png" style="width:80px; height:80px; background-repeat:no-repeat; opacity:0.5;"></td>
+				<td align="center" background="./img/stone_l.png" style="width:80px; height:80px; background-repeat:no-repeat; opacity:0.5;"></td>
+				<td align="center" background="./img/stone_d.png" style="width:80px; height:80px; background-repeat:no-repeat; opacity:0.5;"></td>
+				<td align="center" background="./img/stone_h.png" style="width:80px; height:80px; background-repeat:no-repeat; opacity:0.5;"></td>
+				<td id="fire_icon" align="center" background="./img/fire_icon.png" style="width:120px; height:120px; background-repeat:no-repeat; opacity:0.5; display:none;"></td>
+				<td id="heal_icon" align="center" background="./img/heal_icon.png" style="width:120px; height:120px; background-repeat:no-repeat; opacity:0.5; display:none;"></td>
+			</tr>
+		</table>
+	</div>
+	
+	<div id="dissolveResult" style="cursor:default;">
+		<table align="center" rules="none" style="">
+			<tr>
+				<td align="center" style="width:80px; height:70px;"><font id="dr1" style="font:bold 50pt 微軟正黑體; color:#FFFFFF;">0</font></td>
+				<td align="center" style="width:80px; height:70px;"><font id="dr2" style="font:bold 50pt 微軟正黑體; color:#FFFFFF;">0</font></td>
+				<td align="center" style="width:80px; height:70px;"><font id="dr3" style="font:bold 50pt 微軟正黑體; color:#FFFFFF;">0</font></td>
+				<td align="center" style="width:80px; height:70px;"><font id="dr4" style="font:bold 50pt 微軟正黑體; color:#FFFFFF;">0</font></td>
+				<td align="center" style="width:80px; height:70px;"><font id="dr5" style="font:bold 50pt 微軟正黑體; color:#FFFFFF;">0</font></td>
+				<td align="center" style="width:80px; height:70px;"><font id="dr0" style="font:bold 50pt 微軟正黑體; color:#FFFFFF;">0</font></td>
+				<td id="ftd" align="center" style="width:80px; height:70px; display:none;"><font id="drf" style="font:bold 50pt 微軟正黑體; color:#FFFF33; display:none;">0</font></td>
+				<td id="htd" align="center" style="width:80px; height:70px; display:none;"><font id="drh" style="font:bold 50pt 微軟正黑體; color:#FF77FF; display:none;">0</font></td>
+			</tr>
+		</table>
+	</div>
+	<div id="dissolveNumber" style="cursor:default;">
+		<table align="center" rules="none" style="">
+			<tr>
+				<td align="center" style="width:80px; height:40px;"><font id="dn1" style="font:bold 20pt 微軟正黑體; color:#00BBFF;">0</font></td>
+				<td align="center" style="width:80px; height:40px;"><font id="dn2" style="font:bold 20pt 微軟正黑體; color:#FF0000;">0</font></td>
+				<td align="center" style="width:80px; height:40px;"><font id="dn3" style="font:bold 20pt 微軟正黑體; color:#00DD00;">0</font></td>
+				<td align="center" style="width:80px; height:40px;"><font id="dn4" style="font:bold 20pt 微軟正黑體; color:#FFCC22;">0</font></td>
+				<td align="center" style="width:80px; height:40px;"><font id="dn5" style="font:bold 20pt 微軟正黑體; color:#B94FFF;">0</font></td>
+				<td align="center" style="width:80px; height:40px;"><font id="dn0" style="font:bold 20pt 微軟正黑體; color:#FF3EFF;">0</font></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div id="resultPanel" style="display:none; border:3px #0066FF solid; overflow-x:hidden; overflow-y:auto; cursor:default;">
+	<font align="left" style="font:bold 40pt 微軟正黑體; color:#FFFF33;">
+		&nbsp;首消
+	</font>
+	<hr style="border:1px dotted #FFF; height:1px "/>
+	<div id="result_f_combo" align="left" style="font:bold 30pt 微軟正黑體;">	
+	</div>
+	<hr style="border: 3px solid #0066FF"/>
+	<font align="left" style="font:bold 40pt 微軟正黑體; color:#FFFF33;">
+		&nbsp;疊珠
+	</font>
+	<hr style="border:1px dotted #FFF; height:1px "/>
+	<div id="result_n_combo" align="left" style="font:bold 30pt 微軟正黑體;">
+	</div>
+</div>
+
+<div id="editPanel" style="display:none; border:3px #0066FF solid;">
+	<div id="chart0" style="width:90%;">
+		<input id="stoneMode0" type="submit" value="一般符石" onclick="StoneMode(0);" style="font:bold 20pt 微軟正黑體; border:3px #0044BB solid; padding:5px; background-color:#77DDFF; color:#FFFF00; cursor:pointer;">
+		<input id="stoneMode1" type="submit" value="特殊符石" onclick="StoneMode(1);" style="font:bold 20pt 微軟正黑體; border:3px #0044BB solid; padding:5px; background-color:#77DDFF; color:#0044BB; cursor:pointer;">
+		<input id="stoneMode2" type="submit" value="種族符石" onclick="StoneMode(2);" style="font:bold 20pt 微軟正黑體; border:3px #0044BB solid; padding:5px; background-color:#77DDFF; color:#0044BB; cursor:pointer;">
+		&nbsp;&nbsp;&nbsp;
+		<input id="modelPage" type="submit" value=" → " onclick="ModelPage();" style="font:bold 20pt 微軟正黑體; border:3px #FF8800 solid; padding:5px; background-color:#FFDD55; color:#FFFFFF; cursor:pointer;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input id="modelPageText" type="submit" value="" style="font:bold 25pt 微軟正黑體; border:0px #FFFFFF solid; padding:5px; background-color:rgba(0, 0, 0, 0); color:#FFFFFF; cursor:pointer;">
+        <script>InitModelPage();</script>
+	</div>
+	<div id="chart1" style="">
+		<table id="normal_stone" align="center" rules="all" style="border:2px #FF7700 solid; display:block;">
+			<tr>
+				<td id="e1" class="et" align="center"><img src="./img/stone_w.png" onClick="SelectAttri(1)" style="width:100px; cursor:pointer;" title="水符石"></td>
+				<td id="e2" class="et" align="center"><img src="./img/stone_f.png" onClick="SelectAttri(2)" style="width:100px; cursor:pointer;" title="火符石"></td>
+			</tr>
+			<tr>
+				<td id="e3" class="et" align="center"><img src="./img/stone_e.png" onClick="SelectAttri(3)" style="width:100px; cursor:pointer;" title="木符石"></td>
+				<td id="e4" class="et" align="center"><img src="./img/stone_l.png" onClick="SelectAttri(4)" style="width:100px; cursor:pointer;" title="光符石"></td>
+			</tr>
+			<tr>
+				<td id="e5" class="et" align="center"><img src="./img/stone_d.png" onClick="SelectAttri(5)" style="width:100px; cursor:pointer;" title="暗符石"></td>
+				<td id="e6" class="et" align="center"><img src="./img/stone_h.png" onClick="SelectAttri(6)" style="width:100px; cursor:pointer;" title="心符石"></td>
+			</tr>
+		</table>
+        <table id="special_stone" align="center" rules="all" style="border:2px #FF7700 solid; display:none;">
+			<tr>
+                <td id="e7" class="et" align="center"><img src="./img/stone_l_en.png" onClick="SelectAttri(7)" style="width:100px; cursor:pointer;" title="強化符石"></td>
+				<td id="e8" class="et" align="center"><img src="./img/stone_d_wt.png" onClick="SelectAttri(8)" style="width:100px; cursor:pointer;" title="風化符石"></td>
+			</tr>
+			<tr>
+				<td id="e9" class="et" align="center"><img src="./img/stone_h_lk.png" onClick="SelectAttri(9)" style="width:100px; cursor:pointer;" title="鎖定符石"></td>
+				<td id="e10" class="et" align="center"><img src="./img/stone_w_fr.png" onClick="SelectAttri(10)" style="width:100px; cursor:pointer;" title="凍結符石"></td>
+			</tr>
+            <tr>
+				<td id="e11" class="et" align="center"><img src="./img/frozen.png" onClick="SelectAttri(11)" style="width:100px; cursor:pointer;" title="冰封符石"></td>
+				<td id="e12" class="et" align="center"><img src="./img/petrified_2.png" onClick="SelectAttri(12)" style="width:100px; cursor:pointer;" title="石化符石"></td>
+			</tr>
+			
+		</table>
+		<table id="race_stone" align="center" rules="all" style="border:2px #FF7700 solid; display:none;">
+			<tr>
+				<td id="e13" class="et" align="center"><img src="./img/stone_w_g.png" onClick="SelectAttri(13)" style="width:100px; cursor:pointer;" title="神族符石"></td>
+				<td id="e14" class="et" align="center"><img src="./img/stone_f_b.png" onClick="SelectAttri(14)" style="width:100px; cursor:pointer;" title="獸族符石"></td>
+			</tr>
+			<tr>
+				<td id="e15" class="et" align="center"><img src="./img/stone_e_h.png" onClick="SelectAttri(15)" style="width:100px; cursor:pointer;" title="人族符石"></td>
+                <td id="e16" class="et" align="center"><img src="./img/stone_l_e.png" onClick="SelectAttri(16)" style="width:100px; cursor:pointer;" title="妖族符石"></td>
+            </tr>
+            <tr>
+				<td id="e17" class="et" align="center"><img src="./img/stone_d_dr.png" onClick="SelectAttri(17)" style="width:100px; cursor:pointer;" title="龍族符石"></td>
+				<td id="e18" class="et" align="center"><img src="./img/stone_h_de.png" onClick="SelectAttri(18)" style="width:100px; cursor:pointer;" title="魔族符石"></td>
+            </tr>
+			
+		</table>
+	</div>
+	<div id="chart2" style="">
+		<table id="model1" align="center" rules="none" style="display:block;">
+			<tr>
+				<td id="es1" class="et" align="center">
+                    <img id="char1" class="asklbtn" src="./img/1137.png" onClick="SelectModel(1)" style="width:100px; cursor:pointer; display:inline;" title="隅角花海 ‧ 水">
+                    <img id="char1.1" class="asklbtn" src="./img/1375.png" onClick="SelectModel(1.1)" style="width:100px; cursor:pointer; display:none;" title="隅角花海 ‧ 浪濤">
+                    <img id="change1" class="asklbtn" src="./img/change_icon.png" onClick="ChangeCharacter(1)" style="position:absolute; bottom:10px; left:10px; width:30px; height:30px; cursor:pointer; display:inline;">
+                    <img id="change1.1" class="asklbtn" src="./img/change_icon_r.png" onClick="ChangeCharacter(1.1)" style="position:absolute; bottom:10px; left:10px; width:30px; height:30px; cursor:pointer; display:none;">
+                </td>
+				<td id="es2" class="et" align="center">
+                    <img id="char2" class="asklbtn" src="./img/1145.png" onClick="SelectModel(2)" style="width:100px; cursor:pointer;" title="隅角花海 ‧ 暗">
+                    <img id="char2.1" class="asklbtn" src="./img/1379.png" onClick="SelectModel(2.1)" style="width:100px; cursor:pointer; display:none;" title="隅角花海 ‧ 幽冥">
+                    <img id="change2" class="asklbtn" src="./img/change_icon.png" onClick="ChangeCharacter(2)" style="position:absolute; bottom:10px; left:10px; width:30px; height:30px; cursor:pointer; display:inline;">
+                    <img id="change2.1" class="asklbtn" src="./img/change_icon_r.png" onClick="ChangeCharacter(2.1)" style="position:absolute; bottom:10px; left:10px; width:30px; height:30px; cursor:pointer; display:none;">
+                </td>
+				<td id="es3" class="et" align="center">
+                    <img id="char3" class="asklbtn" src="./img/1091.png" onClick="SelectModel(3)" style="width:100px; cursor:pointer;" title="水之仙女">
+                </td>
+			</tr>
+			<tr>
+				<td id="es4" class="et" align="center">
+                    <img id="char4" class="asklbtn" src="./img/1169.png" onClick="SelectModel(4)" style="width:100px; cursor:pointer;" title="加冕之卍 ‧ 火"></td>
+				<td id="es5" class="et" align="center">
+                    <img id="char5" class="asklbtn" src="./img/1175.png" onClick="SelectModel(5)" style="width:100px; cursor:pointer;" title="加冕之卍 ‧ 暗"></td>
+				<td id="es6" class="et" align="center">
+                    <img id="char6" class="asklbtn" src="./img/1097.png" onClick="SelectModel(6)" style="width:100px; cursor:pointer;" title="憐憫惡魔之歌"></td>
+			</tr>
+			<tr>
+				<td id="es7" class="et" align="center">
+                    <img id="char7" class="asklbtn" src="./img/892.png" onClick="SelectModel(7)" style="width:100px; cursor:pointer;" title="旋風咒">
+                </td>
+				<td id="es8" class="et" align="center">
+                    <img id="char8" class="asklbtn" src="./img/900.png" onClick="SelectModel(8)" style="width:100px; cursor:pointer;" title="乾坤一擲">
+                </td>
+				<td id="es9" class="et" align="center">
+                    <img id="char9" class="asklbtn" src="./img/1094.png" onClick="SelectModel(9)" style="width:100px; cursor:pointer;" title="騎士王神劍 - 王者之劍">
+                </td>
+			</tr>
+			<tr>
+				<td id="es10" class="et" align="center">
+                    <img id="char10" class="asklbtn" src="./img/1239.png" onClick="SelectModel(10)" style="width:100px; cursor:pointer;" title="三原靈陣 ‧ 血燄">
+                </td>
+				<td id="es11" class="et" align="center">
+                    <img id="char11" class="asklbtn" src="./img/1224.png" onClick="SelectModel(11)" style="width:100px; cursor:pointer;" title="炙熱爪擊">
+                </td>
+				<td id="es12" class="et" align="center">
+                    <img id="char12" class="asklbtn" src="./img/1032.png" onClick="SelectModel(12)" style="width:100px; cursor:pointer;" title="元素均霑">
+                    <img id="char12.1" class="asklbtn" src="./img/1406.png" onClick="SelectModel(12.1)" style="width:100px; cursor:pointer; display:none;" title="元素均霑 ‧ 強">
+                    <img id="change12" class="asklbtn" src="./img/change_icon.png" onClick="ChangeCharacter(12)" style="position:absolute; bottom:10px; left:10px; width:30px; height:30px; cursor:pointer; display:inline;">
+                    <img id="change12.1" class="asklbtn" src="./img/change_icon_r.png" onClick="ChangeCharacter(12.1)" style="position:absolute; bottom:10px; left:10px; width:30px; height:30px; cursor:pointer; display:none;">
+                </td>
+			</tr>
+		</table>
+		<table id="model2" align="center" rules="none" style="display:none;">
+			<tr>
+				<td id="es13" class="et" align="center">
+                    <img id="char13" class="asklbtn" src="./img/1287.png" onClick="SelectModel(13)" style="width:100px; cursor:pointer;" title="水月醉光華">
+                </td>
+				<td id="es14" class="et" align="center">
+                    <img id="char14" class="asklbtn" src="./img/1279.png" onClick="SelectModel(14)" style="width:100px; cursor:pointer;" title="星火延展">
+                </td>
+				<td id="es15" class="et" align="center">
+                    <img id="char15" class="asklbtn" src="./img/1296.png" onClick="SelectModel(15)" style="width:100px; cursor:pointer;" title="懾魂魅靈">
+                </td>
+			</tr>
+			<tr>
+				<td id="es16" class="et" align="center">
+                    <img id="char16" class="asklbtn" src="./img/877.png" onClick="SelectModel(16)" style="width:100px; cursor:pointer;" title="郎之心扉">
+                </td>
+				<td id="es17" class="et" align="center">
+                    <img id="char17" class="asklbtn" src="./img/878.png" onClick="SelectModel(17)" style="width:100px; cursor:pointer;" title="妾之心扉">
+                </td>
+				<td id="es18" class="et" align="center">
+                    <img id="char18" class="asklbtn" src="./img/1277.png" onClick="SelectModel(18)" style="width:100px; cursor:pointer;" title="三原流水刃">
+                </td>
+			</tr>
+			<tr>
+				<td id="es19" class="et" align="center">
+                    <img id="char19" class="asklbtn" src="./img/998.png" onClick="SelectModel(19)" style="width:100px; cursor:pointer;" title="玄冥靈量">
+                </td>
+				<td id="es20" class="et" align="center">
+                    <img id="char20" class="asklbtn" src="./img/1429.png" onClick="SelectModel(20)" style="width:100px; cursor:pointer;" title="靈木無量">
+                </td>
+				<td id="es21" class="et" align="center">
+                    <img id="char21" class="asklbtn" src="./img/1301.png" onClick="SelectModel(21)" style="width:100px; cursor:pointer;" title="水月連擊">
+                </td>
+			</tr>
+			<tr>
+				<td id="es22" class="et" align="center">
+                    <img id="char22" class="asklbtn" src="./img/1302.png" onClick="SelectModel(22)" style="width:100px; cursor:pointer;" title="火影連擊">
+                </td>
+				<td id="es23" class="et" align="center">
+                    <img id="char23" class="asklbtn" src="./img/1303.png" onClick="SelectModel(23)" style="width:100px; cursor:pointer;" title="木葉連擊">
+                </td>
+				<td id="es24" class="et" align="center">
+                    <img id="char24" class="asklbtn" src="./img/1304.png" onClick="SelectModel(24)" style="width:100px; cursor:pointer;" title="光華連擊">
+                </td>
+			</tr>
+		</table>
+		<table id="model3" align="center" rules="none" style="display:none;">
+			<tr>
+				<td id="es25" class="et" align="center">
+                    <img id="char25" class="asklbtn" src="./img/1305.png" onClick="SelectModel(25)" style="width:100px; cursor:pointer;" title="暗流連擊">
+                </td>
+				<td id="es26" class="et" align="center">
+                    <img id="char26" class="asklbtn" src="./img/1435.png" onClick="SelectModel(26)" style="width:100px; cursor:pointer;" title="光靈加冕圍城">
+                </td>
+				<td id="es27" class="et" align="center">
+                    <img id="char27" class="asklbtn" src="./img/1459.png" onClick="SelectModel(27)" style="width:100px; cursor:pointer;" title="隅角花海 ‧ 木">
+                </td>
+			</tr>
+			<tr>
+				<td id="es28" class="et" align="center">
+                    <img id="char28" class="asklbtn" src="./img/1463.png" onClick="SelectModel(28)" style="width:100px; cursor:pointer;" title="馴獅之志">
+                </td>
+				<td id="es29" class="et" align="center">
+                    <img id="char29" class="asklbtn" src="./img/1491.png" onClick="SelectModel(29)" style="width:100px; cursor:pointer;" title="星落欄柵">
+                </td>
+				<td id="es30" class="et" align="center">
+                    <img id="char30" class="asklbtn" src="./img/1506.png" onClick="SelectModel(30)" style="width:100px; cursor:pointer;" title="天問三誓">
+                </td>
+			</tr>
+            <tr>
+				<td id="es31" class="et" align="center">
+                    <img id="char31" class="asklbtn" src="./img/1539.png" onClick="SelectModel(31)" style="width:100px; cursor:pointer;" title="赤火之靈">
+                </td>
+				<td id="es32" class="et" align="center">
+                    <img id="char32" class="asklbtn" src="./img/1564.png" onClick="SelectModel(32)" style="width:100px; cursor:pointer;" title="混沌退散">
+                </td>
+				<td id="es33" class="et" align="center">
+                    <img id="char33" class="asklbtn" src="./img/1576.png" onClick="SelectModel(33)" style="width:100px; cursor:pointer;" title="超必殺忍蜂">
+                </td>
+			</tr>
+            <tr>
+				<td id="es34" class="et" align="center">
+                    <img id="char34" class="asklbtn" src="./img/1576.png" onClick="SelectModel(34)" style="width:100px; cursor:pointer;" title="MAX 版 超必殺忍蜂">
+                </td>
+				<td id="es35" class="et" align="center">
+                    <img id="char35" class="asklbtn" src="./img/1581.png" onClick="SelectModel(35)" style="width:100px; cursor:pointer;" title="裏面八拾五活 ‧ 零技之礎">
+                </td>
+				<td id="es36" class="et" align="center">
+                    <img id="char36" class="asklbtn" src="./img/1585.png" onClick="SelectModel(36)" style="width:100px; cursor:pointer;" title="V 字殺手">
+                </td>
+			</tr>
+		</table>
+        <table id="model4" align="center" rules="none" style="display:none;">
+			<tr>
+				<td id="es37" class="et" align="center">
+                    <img id="char37" class="asklbtn" src="./img/1666.png" onClick="SelectModel(37)" style="width:100px; cursor:pointer;" title="加冕之卍">
+                </td>
+				<td id="es38" class="et" align="center">
+                    <img id="char38" class="asklbtn" src="./img/1667.png" onClick="SelectModel(38)" style="width:100px; cursor:pointer;" title="兩儀加冕 ‧ 火">
+                </td>
+				<td id="es39" class="et" align="center">
+                    <img id="char39" class="asklbtn" src="./img/1690.png" onClick="SelectModel(39)" style="width:100px; cursor:pointer;" title="奪魂鐮刃">
+                </td>
+			</tr>
+			<tr>
+				<td id="es40" class="et" align="center">
+                    <img id="char40" class="asklbtn" src="./img/1692.png" onClick="SelectModel(40)" style="width:100px; cursor:pointer;" title="藤木交纏">
+                </td>
+				<td id="es41" class="et" align="center">
+                    <img id="char41" class="asklbtn" src="./img/1713.png" onClick="SelectModel(41)" style="width:100px; cursor:pointer;" title="融冰之靈">
+                </td>
+				<td id="es42" class="et" align="center">
+                    <img id="char42" class="asklbtn" src="./img/1706.png" onClick="SelectModel(42)" style="width:100px; cursor:pointer;" title="烈火鬥心">
+                </td>
+			</tr>
+			<tr>
+				<td id="es43" class="et" align="center">
+                    <img id="char43" class="asklbtn" src="./img/1189.png" onClick="SelectModel(43)" style="width:100px; cursor:pointer;" title="信誓的泉源">
+                    <img id="char43.1" class="asklbtn" src="./img/1371.png" onClick="SelectModel(43.1)" style="width:100px; cursor:pointer; display:none;" title="誓約的泉源 ‧ 加冕">
+                    <img id="change43" class="asklbtn" src="./img/change_icon.png" onClick="ChangeCharacter(43)" style="position:absolute; bottom:10px; left:10px; width:30px; height:30px; cursor:pointer; display:inline;">
+                    <img id="change43.1" class="asklbtn" src="./img/change_icon_r.png" onClick="ChangeCharacter(43.1)" style="position:absolute; bottom:10px; left:10px; width:30px; height:30px; cursor:pointer; display:none;">
+                </td>
+				<td id="es44" class="et" align="center">
+                    <img id="char44" class="asklbtn" src="./img/1376.png" onClick="SelectModel(44)" style="width:100px; cursor:pointer;" title="火影約章 ‧ 強">
+                </td>
+				<td id="es45" class="et" align="center">
+                    <img id="char45" class="asklbtn" src="./img/1377.png" onClick="SelectModel(45)" style="width:100px; cursor:pointer;" title="木葉約章 ‧ 強">
+                </td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div id="editSkill" style="display:none; border:3px #0066FF solid;">
+	<div id="skill_sel" style="width:610px;">
+		<input id="skillEnemy" type="submit" value="敵方技能" onclick="SkillMode(0);" style="height:60px; width:302px; align:left; font:bold 23pt 微軟正黑體; border:3px #0044BB solid; padding:5px; background-color:#77DDFF; color:#FFFF00; cursor:pointer;">
+		<input id="skillPlayer" type="submit" value="我方技能" onclick="SkillMode(1);" style="height:60px; width:302px; align:right; font:bold 23pt 微軟正黑體; border:3px #0044BB solid; padding:5px; background-color:#77DDFF; color:#0044BB; cursor:pointer;">
+	</div>
+	<div id="enemySkill" align="left" style="font:bold 20pt 微軟正黑體; display:inline;">
+		<span id="skillSpanE" style="font:bold 25pt 微軟正黑體; color:#FFFF00; cursor:default;">敵方技能：<font style="color:#FFFFFF;">無</font><br></span>
+		<input id="enemyType1" type="submit" value="影響轉珠" onclick="EnemySkillType(0);" style="font:bold 20pt 微軟正黑體; border:3px #AA0000 solid; padding:5px; background-color:#FFDDAA; color:#000088; cursor:pointer;">
+		<input id="enemyType2" type="submit" value="影響版面" onclick="EnemySkillType(1);" style="font:bold 20pt 微軟正黑體; border:3px #AA0000 solid; padding:5px; background-color:#FFDDAA; color:#AA0000; cursor:pointer;">
+		<input id="enemyType3" type="submit" value="符石禁消" onclick="EnemySkillType(2);" style="font:bold 20pt 微軟正黑體; border:3px #AA0000 solid; padding:5px; background-color:#FFDDAA; color:#AA0000; cursor:pointer;">
+		<br>
+		<table id="enemyT1" class="skldiv" style="font:bold 20pt 微軟正黑體; cursor:hand; display:block;">
+            <tr>
+                <td><input id="et1_0" type="button" class="sklbtn0" name="et1" value="無" onclick="EnemySkillControl(0);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#FFFFFF; border:3px #DDDDDD double; background-color:#888888;"></td>
+                <td><input id="et1_1" type="button" class="sklbtn0" name="et1" value="軌跡腐蝕" onclick="EnemySkillControl(1);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#00FF00; border:3px #00FF00 double; background-color:transparent;"></td>
+                <td><input id="et1_2" type="button" class="sklbtn0" name="et1" value="軌跡腐蝕 ‧ 連" onclick="EnemySkillControl(2);" style="height:80px; width:197px; font:bold 22pt 微軟正黑體; cursor:pointer; color:#00FF00; border:3px #00FF00 double; background-color:transparent;"></td>
+            </tr>
+            <tr>
+                <td><input id="et1_3" type="button" class="sklbtn0" name="et1" value="軌跡燃燒" onclick="EnemySkillControl(3);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#FF0000; border:3px #FF0000 double; background-color:transparent;"></td>
+                <td><input id="et1_4" type="button" class="sklbtn0" name="et1" value="軌跡靈化" onclick="EnemySkillControl(4);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#FF88C2; border:3px #FF88C2 double; background-color:transparent;"></td>
+                <td><input id="et1_5" type="button" class="sklbtn0" name="et1" value="燃燒極地" onclick="EnemySkillControl(5);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#FF0000; border:3px #FF0000 double; background-color:transparent;"></td>
+            </tr>
+        </table>
+        <table id="enemyT2" class="skldiv" style="font:bold 20pt 微軟正黑體; cursor:hand; display:none;">
+			<tr>
+                <td><input id="et2_0" type="button" class="sklbtn1" name="et2" value="鎖定圍城" onclick="EnemySkillControl(12);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+			    <td><input id="et2_1" type="button" class="sklbtn2" name="et2" value="凍結圍城" onclick="EnemySkillControl(13);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+			    <td><input id="et2_2" type="button" class="sklbtn2" name="et2" value="冰封圍城" onclick="EnemySkillControl(14);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+			</tr>
+            <tr>
+                <td><input id="et2_3" type="button" class="sklbtn3" name="et2" value="底部橫向風化" onclick="EnemySkillControl(15);" style="height:80px; width:197px; font:bold 22pt 微軟正黑體; cursor:pointer;"></td>
+			    <td><input id="et2_4" type="button" class="sklbtn3" name="et2" value="兩側風化" onclick="EnemySkillControl(16);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+			    <td><input id="et2_5" type="button" class="sklbtn3" name="et2" value="X形風化" onclick="EnemySkillControl(17);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+			</tr>
+            <tr>
+                <td><input id="et2_6" type="button" class="sklbtn3" name="et2" value="中間橫向風化" onclick="EnemySkillControl(18);" style="height:80px; width:197px; font:bold 22pt 微軟正黑體; cursor:pointer;"></td>
+                <td><input id="et2_7" type="button" class="sklbtn2" name="et2" value="底部橫向凍結" onclick="EnemySkillControl(19);" style="height:80px; width:197px; font:bold 22pt 微軟正黑體; cursor:pointer;"></td>
+                <td><input id="et2_8" type="button" class="sklbtn2" name="et2" value="雪花型凍結" onclick="EnemySkillControl(20);" style="height:80px; width:197px; font:bold 26pt 微軟正黑體; cursor:pointer;"></td>
+            </tr>
+            <tr>
+                <td><input id="et2_9" type="button" class="sklbtn2" name="et2" value="雪花型冰封" onclick="EnemySkillControl(21);" style="height:80px; width:197px; font:bold 26pt 微軟正黑體; cursor:pointer;"></td>
+            </tr>
+        </table>
+        <table id="enemyT3" class="skldiv" style="font:bold 20pt 微軟正黑體; cursor:hand; display:none;">
+			<tr>
+                <td><input id="et3_5" type="button" class="sklbtn0" name="et3" value="禁消 ‧ 心" onclick="EnemySkillControl(11);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#FF88C2; border:3px #FF88C2 double; background-color:transparent;"></td>
+                <td><input id="et3_0" type="button" class="sklbtn0" name="et3" value="禁消 ‧ 水" onclick="EnemySkillControl(6);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#00FFFF; border:3px #00FFFF double; background-color:transparent;"></td>
+                <td><input id="et3_1" type="button" class="sklbtn0" name="et3" value="禁消 ‧ 火" onclick="EnemySkillControl(7);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#FF0000; border:3px #FF0000 double; background-color:transparent;"></td>
+			</tr>
+            <tr>
+                <td><input id="et3_2" type="button" class="sklbtn0" name="et3" value="禁消 ‧ 木" onclick="EnemySkillControl(8);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#00FF00; border:3px #00FF00 double; background-color:transparent;"></td>
+                <td><input id="et3_3" type="button" class="sklbtn0" name="et3" value="禁消 ‧ 光" onclick="EnemySkillControl(9);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#FFFF00; border:3px #FFFF00 double; background-color:transparent;"></td>
+                <td><input id="et3_4" type="button" class="sklbtn0" name="et3" value="禁消 ‧ 暗" onclick="EnemySkillControl(10);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#9955FF; border:3px #9955FF double; background-color:transparent;"></td>
+            </tr>
+        </table>
+		
+	</div>
+	<div id="playerSkill" align="left" style="font:bold 20pt 微軟正黑體; cursor:hand; display:none;">
+		<span id="skillSpanP" style="font:bold 25pt 微軟正黑體; color:#FFFF00;">隊伍技能：<font style="color:#FFFFFF;">無</font><br></span>
+		<input id="playerType1" type="submit" value="影響版面" onclick="PlayerSkillType(1);" style="font:bold 20pt 微軟正黑體; border:3px #AA0000 solid; padding:5px; background-color:#FFDDAA; color:#000088; cursor:pointer;">
+		<input id="playerType2" type="submit" value="裂　　珠" onclick="PlayerSkillType(0);" style="font:bold 20pt 微軟正黑體; border:3px #AA0000 solid; padding:5px; background-color:#FFDDAA; color:#AA0000; cursor:pointer;">
+		<br>
+        <table id="playerT2" class="skldiv" style="font:bold 20pt 微軟正黑體; cursor:hand; display:block;">
+			<tr>
+                <td><input id="pt2_0" type="button" class="sklbtn7" name="pt2" value="加冕圍城" onclick="PlayerSkillControl(7);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+                <td><input id="pt2_1" type="button" class="sklbtn7" name="pt2" value="幻象破滅" onclick="PlayerSkillControl(8);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+                <td><input id="pt2_2" type="button" class="sklbtn2" name="pt2" value="滄海圍城" onclick="PlayerSkillControl(9);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+            </tr>
+			<tr>
+                <td><input id="pt2_3" type="button" class="sklbtn4" name="pt2" value="熾焰圍城" onclick="PlayerSkillControl(10);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+                <td><input id="pt2_4" type="button" class="sklbtn1" name="pt2" value="森谷圍城" onclick="PlayerSkillControl(11);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+                <td><input id="pt2_5" type="button" class="sklbtn3" name="pt2" value="雷霆光鏵" onclick="PlayerSkillControl(12);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+            </tr>
+			<tr>
+                <td><input id="pt2_6" type="button" class="sklbtn5" name="pt2" value="幽冥圍城" onclick="PlayerSkillControl(13);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+                <td><input id="pt2_7" type="button" class="sklbtn6" name="pt2" value="靈氣圍城" onclick="PlayerSkillControl(14);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer;"></td>
+            </tr>
+        </table>
+		<table id="playerT1" class="skldiv" style="font:bold 20pt 微軟正黑體; cursor:hand; display:none;">
+			<tr>
+                <td><input id="pt1_0" type="button" class="sklbtn0" name="pt1" value="裂　心" onclick="PlayerSkillControl(0);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#FF88C2; border:3px #FF88C2 double; background-color:transparent;"></td>
+			    <td><input id="pt1_1" type="button" class="sklbtn0" name="pt1" value="裂　水" onclick="PlayerSkillControl(1);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#00FFFF; border:3px #00FFFF double; background-color:transparent;"></td>
+			    <td><input id="pt1_2" type="button" class="sklbtn0" name="pt1" value="裂　火" onclick="PlayerSkillControl(2);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#FF0000; border:3px #FF0000 double; background-color:transparent;"></td>
+			</tr>
+            <tr>
+                <td><input id="pt1_3" type="button" class="sklbtn0" name="pt1" value="裂　木" onclick="PlayerSkillControl(3);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#00FF00; border:3px #00FF00 double; background-color:transparent;"></td>
+			    <td><input id="pt1_4" type="button" class="sklbtn0" name="pt1" value="裂　光" onclick="PlayerSkillControl(4);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#FFFF00; border:3px #FFFF00 double; background-color:transparent;"></td>
+			    <td><input id="pt1_5" type="button" class="sklbtn0" name="pt1" value="裂　暗" onclick="PlayerSkillControl(5);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#9955FF; border:3px #9955FF double; background-color:transparent;"></td>
+			</tr>
+            <tr>
+                <td><input id="pt1_6" type="button" class="sklbtn0" name="pt1" value="裂　X" onclick="PlayerSkillControl(6);" style="height:80px; width:197px; font:bold 30pt 微軟正黑體; cursor:pointer; color:#AAAAAA; border:3px #AAAAAA double; background-color:transparent;"></td>
+            </tr>
+        </table>
+        
+	</div>
+</div>
+
+</body></html>
