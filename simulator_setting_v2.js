@@ -164,7 +164,7 @@ var estype1=0, estype2=0;
 var pstype1=0, pstype2=0;
 var break_x=0;
 var round_petri=[];
-var max_page=4;
+var max_page=5;
 
 /*----- pre-processing start -----*/
 
@@ -1778,44 +1778,40 @@ function SelectModel(model)         // active skill model
 				}
 			break;
 			case 7:
-				var arr=[8,8,8,0,0,6];
-				for(var i=0; i<30; i++)
-				{
-					var ok=0;
-					while(!ok)
-					{
-						var ra=parseInt(6*Math.random());
-						if(arr[ra]>0)
-						{
-                            stone[i].attr=ra+1;
-                            stone[i].sp=0;
-                            stone[i].undissolved=0;
-                            stone[i].petrified=0;
-							arr[ra]--;
-							ok=1;
-						}
-					}
-				}
+				var num=[8,8,8,0,0,6];
+                var arr=[], attr=[];
+                for(var i=0; i<30; i++) arr.push(i);
+                for(var i=0; i<6; i++)
+                {
+                    for(var j=0; j<num[i]; j++) attr.push(i+1);
+                }
+                
+                arr=randomGenerator(arr, 30);
+                for(var i=0; i<arr.length; i++)
+                {
+                    stone[arr[i]].attr=attr[i];
+                    stone[arr[i]].sp=0;
+                    stone[arr[i]].undissolved=0;
+                    stone[arr[i]].petrified=0;
+                }
 			break;
 			case 8:
-				var arr=[0,0,0,15,15,0];
-				for(var i=0; i<30; i++)
-				{
-					var ok=0;
-					while(!ok)
-					{
-						var ra=parseInt(6*Math.random());
-						if(arr[ra]>0)
-						{
-							stone[i].attr=ra+1;
-                            stone[i].sp=0;
-                            stone[i].undissolved=0;
-                            stone[i].petrified=0;
-							arr[ra]--;
-							ok=1;
-						}
-					}
-				}
+				var num=[0,0,0,15,15,0];
+                var arr=[], attr=[];
+                for(var i=0; i<30; i++) arr.push(i);
+                for(var i=0; i<6; i++)
+                {
+                    for(var j=0; j<num[i]; j++) attr.push(i+1);
+                }
+                
+                arr=randomGenerator(arr, 30);
+                for(var i=0; i<arr.length; i++)
+                {
+                    stone[arr[i]].attr=attr[i];
+                    stone[arr[i]].sp=0;
+                    stone[arr[i]].undissolved=0;
+                    stone[arr[i]].petrified=0;
+                }
 			break;
 			case 9:
                 var arr=[2,3,8,9,12,13,14,15,16,17,20,21,26,27];
@@ -1896,24 +1892,22 @@ function SelectModel(model)         // active skill model
                 }
 			break;
 			case 15:
-				var arr=[0,0,0,0,15,15];
-				for(var i=0; i<30; i++)
-				{
-					var ok=0;
-					while(!ok)
-					{
-						var ra=parseInt(6*Math.random());
-						if(arr[ra]>0)
-						{
-							stone[i].attr=ra+1;
-                            stone[i].sp=0;
-                            stone[i].undissolved=0;
-                            stone[i].petrified=0;
-							arr[ra]--;
-							ok=1;
-						}
-					}
-				}
+				var num=[0,0,0,0,15,15];
+                var arr=[], attr=[];
+                for(var i=0; i<30; i++) arr.push(i);
+                for(var i=0; i<6; i++)
+                {
+                    for(var j=0; j<num[i]; j++) attr.push(i+1);
+                }
+                
+                arr=randomGenerator(arr, 30);
+                for(var i=0; i<arr.length; i++)
+                {
+                    stone[arr[i]].attr=attr[i];
+                    stone[arr[i]].sp=0;
+                    stone[arr[i]].undissolved=0;
+                    stone[arr[i]].petrified=0;
+                }
 			break;
 			case 16:
 				var arr=[3,6,3,0,0,0,
@@ -1952,23 +1946,53 @@ function SelectModel(model)         // active skill model
 			case 18:
 				for(i=0; i<30; i++)
 				{
-					if(stone[i].attr==4) stone[i].attr=1;
-					else if(stone[i].attr==5) stone[i].attr=2;
-					else if(stone[i].attr==6) stone[i].attr=3;
-                    stone[i].sp=0;
-                    stone[i].undissolved=0;
-                    stone[i].petrified=0;
+					if(stone[i].attr==4)
+                    {
+                        stone[i].attr=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+					else if(stone[i].attr==5)
+                    {
+                        stone[i].attr=2;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+					else if(stone[i].attr==6)
+                    {
+                        stone[i].attr=3;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
 				}
 			break;
 			case 19:
 				for(i=0; i<30; i++)
 				{
-					if(stone[i].attr==1) stone[i].attr=4;
-					else if(stone[i].attr==2) stone[i].attr=5;
-					else if(stone[i].attr==3) stone[i].attr=6;
-                    stone[i].sp=0;
-                    stone[i].undissolved=0;
-                    stone[i].petrified=0;
+					if(stone[i].attr==1)
+                    {
+                        stone[i].attr=4;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+					else if(stone[i].attr==2)
+                    {
+                        stone[i].attr=5;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+					else if(stone[i].attr==3)
+                    {
+                        stone[i].attr=6;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
 				}
 			break;
 			case 20:
@@ -2068,25 +2092,23 @@ function SelectModel(model)         // active skill model
                 }
             break;
             case 30:
-				var arr=[10,0,0,10,0,10];
-				for(var i=0; i<30; i++)
-				{
-					var ok=0;
-					while(!ok)
-					{
-						var ra=parseInt(6*Math.random());
-						if(arr[ra]>0)
-						{
-							stone[i].attr=ra+1;
-                            stone[i].enchanted=1;
-                            stone[i].sp=0;
-                            stone[i].undissolved=0;
-                            stone[i].petrified=0;
-							arr[ra]--;
-							ok=1;
-						}
-					}
-				}
+				var num=[10,0,0,10,0,10];
+                var arr=[], attr=[];
+                for(var i=0; i<30; i++) arr.push(i);
+                for(var i=0; i<6; i++)
+                {
+                    for(var j=0; j<num[i]; j++) attr.push(i+1);
+                }
+                
+                arr=randomGenerator(arr, 30);
+                for(var i=0; i<arr.length; i++)
+                {
+                    stone[arr[i]].attr=attr[i];
+                    stone[arr[i]].enchanted=1;
+                    stone[arr[i]].sp=0;
+                    stone[arr[i]].undissolved=0;
+                    stone[arr[i]].petrified=0;
+                }
 			break;
             case 31:
 				for(var i=0; i<30; i++)
@@ -2133,25 +2155,23 @@ function SelectModel(model)         // active skill model
 				}
 			break;
 			case 33:
-				var arr=[0,8,8,0,8,6];
-				for(var i=0; i<30; i++)
-				{
-					var ok=0;
-					while(!ok)
-					{
-						var ra=parseInt(6*Math.random());
-						if(arr[ra]>0)
-						{
-							stone[i].attr=ra+1;
-                            stone[i].enchanted=1;
-                            stone[i].sp=0;
-                            stone[i].undissolved=0;
-                            stone[i].petrified=0;
-							arr[ra]--;
-							ok=1;
-						}
-					}
-				}
+				var num=[0,8,8,0,8,6];
+                var arr=[], attr=[];
+                for(var i=0; i<30; i++) arr.push(i);
+                for(var i=0; i<6; i++)
+                {
+                    for(var j=0; j<num[i]; j++) attr.push(i+1);
+                }
+                
+                arr=randomGenerator(arr, 30);
+                for(var i=0; i<arr.length; i++)
+                {
+                    stone[arr[i]].attr=attr[i];
+                    stone[arr[i]].enchanted=1;
+                    stone[arr[i]].sp=0;
+                    stone[arr[i]].undissolved=0;
+                    stone[arr[i]].petrified=0;
+                }
 			break;
 			case 34:
 				var arr=[6,6,6,2,3,5,
@@ -2175,10 +2195,10 @@ function SelectModel(model)         // active skill model
                     {
                         stone[i].attr=6;
                         stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
                     }
-                    stone[i].sp=0;
-                    stone[i].undissolved=0;
-                    stone[i].petrified=0;
 				}
 			break;
 			case 36:
@@ -2217,26 +2237,17 @@ function SelectModel(model)         // active skill model
                     {
                         stone[i].attr=2;
                         stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
                     }
-                    stone[i].sp=0;
-                    stone[i].undissolved=0;
-                    stone[i].petrified=0;
                 }
             break;
             case 39:
                 var arr=[];
-                while(arr.length<6)
-                {
-                    var randomnumber=Math.floor(Math.random()*30);
-                    if(arr.indexOf(randomnumber)>-1) continue;
-                    arr[arr.length]=randomnumber;
-                }
-                for(var i=0; i<arr.length; i++)
-                {
-                    stone[arr[i]].attr=1;
-                    stone[arr[i]].sp=0;
-                    stone[arr[i]].race=3;
-                }
+                for(var i=0; i<30; i++) arr.push(i);
+                arr=randomGenerator(arr, 6);
+                for(var i=0; i<arr.length; i++) stone[arr[i]].attr=1, stone[arr[i]].sp=0, stone[arr[i]].race=3;
             break;
             case 40:
                 for(var i=0; i<30; i++)
@@ -2245,10 +2256,10 @@ function SelectModel(model)         // active skill model
                     {
                         stone[i].attr=3;
                         stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
                     }
-                    stone[i].sp=0;
-                    stone[i].undissolved=0;
-                    stone[i].petrified=0;
                 }
             break;
             case 41:
@@ -2268,10 +2279,10 @@ function SelectModel(model)         // active skill model
                     {
                         stone[i].attr=2;
                         stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
                     }
-                    stone[i].sp=0;
-                    stone[i].undissolved=0;
-                    stone[i].petrified=0;
                 }
             break;
             case 43:
@@ -2280,10 +2291,10 @@ function SelectModel(model)         // active skill model
                     if(stone[i].attr==4 || stone[i].attr==6)
                     {
                         stone[i].attr=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
                     }
-                    stone[i].sp=0;
-                    stone[i].undissolved=0;
-                    stone[i].petrified=0;
                 }
             break;
             case 43.1:
@@ -2293,10 +2304,10 @@ function SelectModel(model)         // active skill model
                     {
                         stone[i].attr=1;
                         stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
                     }
-                    stone[i].sp=0;
-                    stone[i].undissolved=0;
-                    stone[i].petrified=0;
                 }
             break;
             case 44:
@@ -2306,15 +2317,131 @@ function SelectModel(model)         // active skill model
                     if(stone[i].attr==model-42)
                     {
                         stone[i].race=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
                     }
-                    stone[i].sp=0;
-                    stone[i].undissolved=0;
-                    stone[i].petrified=0;
+                }
+            break;
+            case 46:
+                var cnt=0;
+                var arr=[];
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr!=1 || stone[i].enchanted!=1) arr.push(i);
+                    else cnt++;
+                }
+                arr=randomGenerator(arr, Math.min(0, 20-cnt));
+                for(var i=0; i<Math.min(0, 20-cnt); i++)
+                {
+                    stone[arr[i]].attr=1;
+                    stone[arr[i]].enchanted=1;
+                }
+            break;
+            case 47:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr==3)
+                    {
+                        stone[i].attr=4;
+                        stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                }
+            break;
+            case 48:
+                var cnt=0;
+                var arr=[];
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr!=6) arr.push(i), cnt++;
+                }
+                arr=randomGenerator(arr, Math.min(cnt, 8));
+                for(var i=0; i<Math.min(cnt, 8); i++)
+                {
+                    stone[arr[i]].attr=6;
+                    stone[arr[i]].enchanted=1;
+                }
+            break;
+            case 49:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr==1 || stone[i].attr==2 || stone[i].attr==3)
+                    {
+                        stone[i].attr=6;
+                        stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                    else if(stone[i].attr==5)
+                    {
+                        stone[i].attr=4;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                }
+            break;
+            case 50:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr==2)
+                    {
+                        stone[i].attr=3;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                    else if(stone[i].attr==1)
+                    {
+                        stone[i].attr=4;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                }
+            break;
+            case 51:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr==2 || stone[i].attr==3)
+                    {
+                        stone[i].attr=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
                 }
             break;
 		}
 		Reset();
 	}
+}
+
+function shuffle(array)
+{
+    var tmp, current, top=array.length;
+    if(top)
+    {
+        while(--top)
+        {
+            current=Math.floor(Math.random()*(top+1));
+            tmp=array[current];
+            array[current]=array[top], array[top]=tmp;
+        }
+    }
+    return array;
+}
+
+function randomGenerator(array, num)
+{
+    var arr=[], res=[];
+    arr=shuffle(array);
+    for(var i=0; i<num; i++) res[i]=arr[i];
+    return res;
 }
 
 function ChangeCharacter(id)
