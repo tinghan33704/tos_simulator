@@ -1,4 +1,4 @@
-/*  Last modified : 2018/3/10 17:21  */
+/*  Last modified : 2018/4/17 19:24  */
 
 /*
     Stone object : {
@@ -2331,8 +2331,8 @@ function SelectModel(model)         // active skill model
                     if(stone[i].attr!=1 || stone[i].enchanted!=1) arr.push(i);
                     else cnt++;
                 }
-                arr=randomGenerator(arr, Math.min(0, 20-cnt));
-                for(var i=0; i<Math.min(0, 20-cnt); i++)
+                arr=randomGenerator(arr, Math.max(0, 20-cnt));
+                for(var i=0; i<Math.max(0, 20-cnt); i++)
                 {
                     stone[arr[i]].attr=1;
                     stone[arr[i]].enchanted=1;
