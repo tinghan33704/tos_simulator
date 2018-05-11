@@ -2173,7 +2173,7 @@ function SelectModel(model)         // active skill model
                     stone[arr[i]].petrified=0;
                 }
 			break;
-			case 34:
+			case 33.1:
 				var arr=[6,6,6,2,3,5,
 						 2,3,5,2,3,5,
 						 2,3,5,2,3,5,
@@ -2437,6 +2437,82 @@ function SelectModel(model)         // active skill model
                     }
                 }
             break;
+            case 53:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].sp==2)
+                    {
+                        stone[i].attr=4;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                    if(stone[i].attr==2)
+                    {
+                        stone[i].attr=4;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                        stone[i].race=3;
+                    }
+                }
+            break;
+            case 54:
+                for(var i=0; i<30; i++)
+                {
+                    if(i%6==0)
+                    {
+                        stone[i].attr=2;
+                        stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                    else if(i%6==5)
+                    {
+                        stone[i].attr=6;
+                        stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                }
+            break;
+            case 54.1:
+                for(var i=0; i<30; i++)
+                {
+                    if(i%2==0)
+                    {
+                        stone[i].attr=2;
+                        stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                    else
+                    {
+                        stone[i].attr=6;
+                        stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                }
+            break;
+            case 55:
+                var arr=[2,1,3,2,2,2,
+						 2,1,3,1,3,2,
+						 2,1,3,1,3,2,
+						 2,1,3,1,3,2,
+						 2,2,2,1,3,2];
+				for(i=0; i<30; i++)
+				{
+					stone[i].attr=arr[i];
+                    stone[i].enchanted=1;
+                    stone[i].sp=0;
+                    stone[i].undissolved=0;
+                    stone[i].petrified=0;
+				}
+            break;
 		}
 		Reset();
 	}
@@ -2505,6 +2581,18 @@ function ChangeCharacter(id)
             document.getElementById("change12.1").style.display="none";
             document.getElementById("change12").style.display="inline";
         break;
+        case 33:
+            document.getElementById("char33").style.display="none";
+            document.getElementById("char33.1").style.display="inline";
+            document.getElementById("change33").style.display="none";
+            document.getElementById("change33.1").style.display="inline";
+        break;
+        case 33.1:
+            document.getElementById("char33.1").style.display="none";
+            document.getElementById("char33").style.display="inline";
+            document.getElementById("change33.1").style.display="none";
+            document.getElementById("change33").style.display="inline";
+        break;
         case 43:
             document.getElementById("char43").style.display="none";
             document.getElementById("char43.1").style.display="inline";
@@ -2516,6 +2604,18 @@ function ChangeCharacter(id)
             document.getElementById("char43").style.display="inline";
             document.getElementById("change43.1").style.display="none";
             document.getElementById("change43").style.display="inline";
+        break;
+        case 54:
+            document.getElementById("char54").style.display="none";
+            document.getElementById("char54.1").style.display="inline";
+            document.getElementById("change54").style.display="none";
+            document.getElementById("change54.1").style.display="inline";
+        break;
+        case 54.1:
+            document.getElementById("char54.1").style.display="none";
+            document.getElementById("char54").style.display="inline";
+            document.getElementById("change54.1").style.display="none";
+            document.getElementById("change54").style.display="inline";
         break;
     }
 }
