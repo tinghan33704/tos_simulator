@@ -2513,6 +2513,25 @@ function SelectModel(model)         // active skill model
                     stone[i].petrified=0;
 				}
             break;
+            case 56:
+                var arr=[1,1,1,1,1,1,
+                         1,0,0,0,0,1,
+                         1,0,0,0,0,1,
+                         1,0,0,0,0,1,
+                         1,1,1,1,1,1];
+				for(i=0; i<30; i++)
+				{
+                    if(arr[i]==1)
+                    {
+                        stone[i].attr=1;
+                        stone[i].enchanted=1;
+                        stone[i].sp=0;
+                        stone[i].race=3;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+				}
+            break;
 		}
 		Reset();
 	}
