@@ -2532,6 +2532,41 @@ function SelectModel(model)         // active skill model
                     }
 				}
             break;
+            case 57:
+                for(i=0; i<30; i++)
+                {
+                    if(stone[i].attr==5) continue;
+                    else
+                    {
+                        var no_dark=1;
+                        for(j=i+1; j<30; j++)
+                        {
+                            if(stone[j].attr==5)
+                            {
+                                no_dark=0;
+                                var temp=new Stone(0, 0, 0, 0, 0, 0);
+                                copyObject(temp, stone[j]);
+                                copyObject(stone[j], stone[i]);
+                                copyObject(stone[i], temp);
+                                break;
+                            }
+                        }
+                        if(no_dark==1) break;
+                    }
+                }
+                for(i=0; i<30; i++) stone[i].enchanted=1;
+            break;
+            case 58:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr<=3) stone[i].attr=4;
+                    else if(stone[i].attr==5) stone[i].attr=6;
+                    else stone[i].enchanted=1;
+                    stone[i].sp=0;
+                    stone[i].undissolved=0;
+                    stone[i].petrified=0;
+                }
+            break;
 		}
 		Reset();
 	}
