@@ -1,4 +1,4 @@
-/*  Last modified : 2018/4/19 19:56  */
+/*  Last modified : 2018/7/15 2:30  */
 
 /*
     Stone object : {
@@ -164,7 +164,7 @@ var estype1=0, estype2=0;
 var pstype1=0, pstype2=0;
 var break_x=0;
 var round_petri=[];
-var max_page=5;
+var max_page=6;
 
 /*----- pre-processing start -----*/
 
@@ -2565,6 +2565,130 @@ function SelectModel(model)         // active skill model
                     stone[i].sp=0;
                     stone[i].undissolved=0;
                     stone[i].petrified=0;
+                }
+            break;
+            case 59:
+                var rand1=-5+Math.floor(Math.random()*10);
+                var rand2=-5+Math.floor(Math.random()*10);
+                var rand3=0-rand1-rand2;
+                
+                var num=[10+rand1,0,0,10+rand2,0,10+rand3];
+                
+                var arr=[], attr=[];
+                for(var i=0; i<30; i++) arr.push(i);
+                for(var i=0; i<6; i++)
+                {
+                    for(var j=0; j<num[i]; j++) attr.push(i+1);
+                }
+                
+                arr=randomGenerator(arr, 30);
+                for(var i=0; i<arr.length; i++)
+                {
+                    stone[arr[i]].attr=attr[i];
+                    stone[arr[i]].enchanted=1;
+                    stone[arr[i]].sp=0;
+                    stone[arr[i]].undissolved=0;
+                    stone[arr[i]].petrified=0;
+                }
+            break;
+            case 60:
+                var rand1=5+Math.floor(Math.random()*5);
+                
+                var arr=[], attr=[];
+                for(var i=0; i<rand1; i++) arr.push(3);
+                for(var i=0; i<30-rand1; i++)
+                {
+                    while(1)
+                    {
+                        rand2=Math.floor(Math.random()*6)+1;
+                        if(rand2!=3)
+                        {
+                            arr.push(rand2);
+                            break;
+                        }
+                    }
+                }
+                
+                arr=randomGenerator(arr, 30);
+                for(var i=0; i<arr.length; i++)
+                {
+                    stone[i].attr=arr[i];
+                    stone[i].undissolved=0;
+                    stone[i].petrified=0;
+                    if(arr[i]==3) stone[i].race=4;
+                }
+            break;
+            case 61:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr==3)
+                    {
+                        stone[i].attr=5;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                        stone[i].race=6;
+                    }
+                    if(stone[i].attr==6)
+                    {
+                        stone[i].attr=2;
+                        stone[i].sp=0;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                        stone[i].race=6;
+                    }
+                }
+            break;
+            case 62:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr==1 || stone[i].attr==4)
+                    {
+                        stone[i].enchanted=1;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                    if(stone[i].attr==5)
+                    {
+                        stone[i].attr=6;
+                        stone[i].enchanted=1;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                }
+            break;
+            case 63:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr==3)
+                    {
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                        stone[i].race=4;
+                    }
+                }
+            break;
+            case 64:
+                var pos_array=[0,6,12,18,24,1,7,13,19,25,2,8,14,20,26,3,9,15,21,27,4,10,16,22,28,5,11,17,23,29];
+                for(i=0; i<30; i++)
+                {
+                    if(stone[pos_array[i]].attr==3) continue;
+                    else
+                    {
+                        var no_earth=1;
+                        for(j=i+1; j<30; j++)
+                        {
+                            if(stone[pos_array[j]].attr==3)
+                            {
+                                no_earth=0;
+                                var temp=new Stone(0, 0, 0, 0, 0, 0);
+                                copyObject(temp, stone[pos_array[j]]);
+                                copyObject(stone[pos_array[j]], stone[pos_array[i]]);
+                                copyObject(stone[pos_array[i]], temp);
+                                break;
+                            }
+                        }
+                        if(no_earth==1) break;
+                    }
                 }
             break;
 		}
