@@ -1,4 +1,4 @@
-/*  Last modified : 2018/7/15 2:30  */
+/*  Last modified : 2018/7/24 4:52  */
 
 /*
     Stone object : {
@@ -1836,10 +1836,11 @@ function SelectModel(model)         // active skill model
 				}
 			break;
 			case 11:
+			case 11.1:
 				var arr=[0,3,7,10,14,17,18,21,25,28];
 				for(var i=0; i<10; i++)
                 {
-                    stone[arr[i]].enchanted=(stone[arr[i]].attr==2)?1:stone[arr[i]].enchanted;
+                    stone[arr[i]].enchanted=(stone[arr[i]].attr==2 || model==11.1)?1:stone[arr[i]].enchanted;
                     stone[arr[i]].attr=2;
                     stone[arr[i]].sp=0;
                     stone[arr[i]].undissolved=0;
@@ -2691,6 +2692,18 @@ function SelectModel(model)         // active skill model
                     }
                 }
             break;
+            case 65:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr==1)
+                    {
+                        stone[i].enchanted=1;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                        stone[i].race=4;
+                    }
+                }
+            break;
 		}
 		Reset();
 	}
@@ -2746,6 +2759,18 @@ function ChangeCharacter(id)
             document.getElementById("char2").style.display="inline";
             document.getElementById("change2.1").style.display="none";
             document.getElementById("change2").style.display="inline";
+        break;
+        case 11:
+            document.getElementById("char11").style.display="none";
+            document.getElementById("char11.1").style.display="inline";
+            document.getElementById("change11").style.display="none";
+            document.getElementById("change11.1").style.display="inline";
+        break;
+        case 11.1:
+            document.getElementById("char11.1").style.display="none";
+            document.getElementById("char11").style.display="inline";
+            document.getElementById("change11.1").style.display="none";
+            document.getElementById("change11").style.display="inline";
         break;
         case 12:
             document.getElementById("char12").style.display="none";
