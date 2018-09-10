@@ -1104,6 +1104,109 @@ function Dissolve()
 		}
 		else BreakStone(set_dissolved);
 	}
+	else if(dissolve_mode==7)		// light-dark two-dissolve mode
+	{
+		var visit=new Array();
+		var queue=new Array();
+		for(var i=0; i<30; i++) visit[i]=(board[i].undissolved==1)?99:0;
+		
+		for(var i=0; i<5; i++)
+		{
+			for(var j=0; j<5; j++)
+			{
+				if(board[i*6+j].attr==4 || board[i*6+j].attr==5)
+				{
+					if(CheckNearDissolve(2,i*6+j,i*6+j+1,-1) && undissolve[board[i*6+j].attr%6]==0)
+					{
+						visit[i*6+j]=1, visit[i*6+j+1]=1;
+					}
+				}
+				else if(j<4)
+				{
+					if(CheckNearDissolve(3,i*6+j,i*6+j+1,i*6+j+2) && undissolve[board[i*6+j].attr%6]==0)
+					{
+						visit[i*6+j]=1, visit[i*6+j+1]=1, visit[i*6+j+2]=1;
+					}
+				}
+			}
+			
+		}
+		for(var i=0; i<6; i++)
+		{
+			for(var j=0; j<4; j++)
+			{
+				if(board[j*6+i].attr==4 || board[j*6+i].attr==5)
+				{
+					if(CheckNearDissolve(2,j*6+i,j*6+i+6,-1) && undissolve[board[j*6+i].attr%6]==0)
+					{
+						visit[j*6+i]=1, visit[j*6+i+6]=1;
+					}
+				}
+				else if(j<3)
+				{
+					if(CheckNearDissolve(3,j*6+i,j*6+i+6,j*6+i+12) && undissolve[board[j*6+i].attr%6]==0)
+					{
+						visit[j*6+i]=1, visit[j*6+i+6]=1, visit[j*6+i+12]=1;
+					}
+				}
+			}
+		}
+		
+		var last=0, head=0;
+		var set_dissolved=0;
+		var d_index=3;
+		
+		for(var j=0; j<30; j++)							// BFS
+		{
+			if(visit[j]==1 && board[j].attr!=0)
+			{
+				last=0, head=0;
+				var count=0;
+				count++;
+				queue[last++]=j;
+				while(head!=last)
+				{
+					visit[queue[head]]=2;
+					if(queue[head]%6!=0 && board[queue[head]-1].attr!=0 && board[queue[head]-1].attr==board[queue[head]].attr && visit[queue[head]-1]==1)
+					{
+						visit[queue[head]-1]=2;
+						queue[last++]=queue[head]-1;
+						count++;
+					}
+					if(queue[head]%6!=5 && board[queue[head]+1].attr!=0 && board[queue[head]+1].attr==board[queue[head]].attr && visit[queue[head]+1]==1)
+					{
+						visit[queue[head]+1]=2;
+						queue[last++]=queue[head]+1;
+						count++;
+					}
+					if(queue[head]>=6 && board[queue[head]-6].attr!=0 && board[queue[head]-6].attr==board[queue[head]].attr && visit[queue[head]-6]==1)
+					{
+						visit[queue[head]-6]=2;
+						queue[last++]=queue[head]-6;
+						count++;
+					}
+					if(queue[head]<=23 && board[queue[head]+6].attr!=0 && board[queue[head]+6].attr==board[queue[head]].attr && visit[queue[head]+6]==1)
+					{
+						visit[queue[head]+6]=2;
+						queue[last++]=queue[head]+6;
+						count++;
+					}
+					head++;
+				}
+				
+				for(var i=0; i<last; i++) visit[queue[i]]=d_index;
+				d_index++;
+				set_dissolved++;
+			}
+		}
+		
+		if(set_dissolved>0)
+		{
+			StoneDisappear(visit, d_index);
+			dissolve_n++;
+		}
+		else BreakStone(set_dissolved);
+	}
 	
 	ResultDisplay();
 
@@ -2841,6 +2944,7 @@ function DissolveModeControl(mode)
 	else if(mode==4) str='火木二消';
 	else if(mode==5) str='二消';
 	else if(mode==6) str='四消';
+	else if(mode==7) str='光暗二消';
 	document.getElementById("dissolveSpan").innerHTML = '消除模式：'+str;
 	Reset();
 }
