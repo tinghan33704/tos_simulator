@@ -295,7 +295,7 @@
 		<span id="timeSpan" style="cursor:default;">轉珠時間：5 秒<br></span>
 		<input id="timeSlider" type="range" value="5" max="30" min="1" step="1" onchange="MoveTimeControl(this.value);">
 	</div>
-	<div id="dissolveControl" align="middle" style="font:bold 20pt 微軟正黑體; color:#FFFF00; border:5px #0044BB double; padding:5px;">
+	<div id="dissolveControl" align="middle" style="font:bold 16pt 微軟正黑體; color:#FFFF00; border:5px #0044BB double; padding:5px;">
 		<span id="dissolveSpan" style="cursor:default;">消除模式：一般<br></span>
 		<select id="dissolveSelector" onchange="DissolveModeControl(this.value);" style="width:160px; height:30px; font-size:18px; color:#000000;">
 			<option value="0" style="color:#000000;" selected>一般</option>
@@ -306,6 +306,8 @@
 			<option value="7" style="color:#000000;">光暗二消</option>
 			<option value="5" style="color:#000000;">二消</option>
 			<option value="6" style="color:#000000;">四消</option>
+			<option value="8" style="color:#000000;">限制首消-一般</option>
+			<option value="9" style="color:#000000;">限制首消-二消</option>
 		</select>
 	</div>
 	<div id="moveControl" align="middle" style="font:bold 20pt 微軟正黑體; color:#FFFF00; border:5px #0044BB double; padding:5px;">
@@ -702,6 +704,9 @@
 			<tr>
 				<td id="es65" class="et" align="center">
                     <img id="char65" class="asklbtn" src="./img/1806.png" onClick="SelectModel(65)" style="width:100px; cursor:pointer;" title="怨呼障縛壁">
+                </td>
+				<td id="es66" class="et" align="center">
+                    <img id="char66" class="asklbtn" src="./img/1854.png" onClick="SelectModel(66)" style="width:100px; cursor:pointer;" title="神界之宰">
                 </td>
 			<tr>
 		</table>

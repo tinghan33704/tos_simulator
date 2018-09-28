@@ -1,4 +1,4 @@
-/*  Last modified : 2018/7/24 4:52  */
+/*  Last modified : 2018/9/28 17:39  */
 
 /*
     Stone object : {
@@ -497,7 +497,7 @@ function CheckNearDissolve(num, n1, n2, n3)
 function Dissolve()
 {
 	if(enemy_skill!=5) BackReconstruct();
-	if(dissolve_mode==0)		// normal mode
+	if(dissolve_mode==0 || dissolve_mode==8)		// normal mode
 	{
 		var visit=new Array();
 		var queue=new Array();
@@ -957,7 +957,7 @@ function Dissolve()
 		}
 		else BreakStone(set_dissolved);
 	}
-    else if(dissolve_mode==5)		// two-dissolve mode
+    else if(dissolve_mode==5 || dissolve_mode==9)		// two-dissolve mode
 	{
 		var visit=new Array();
 		var queue=new Array();
@@ -1373,7 +1373,7 @@ function BreakStone(set)
         if(flag==1) timer3=setTimeout("DropStone()", action_time);
         else console.log("round end");
     }
-    else Dissolve();
+    else if(dissolve_mode!=8 && dissolve_mode!=9) Dissolve();
 }
 
 function FadeBreakStone(id, opa)
@@ -2807,6 +2807,17 @@ function SelectModel(model)         // active skill model
                     }
                 }
             break;
+            case 66:
+				var arr=[3,4,5,11,17,23,29];
+				for(i=0; i<7; i++)
+				{
+                    stone[arr[i]].attr=4;
+                    stone[arr[i]].sp=0;
+                    stone[arr[i]].undissolved=0;
+                    stone[arr[i]].petrified=0;
+                    stone[arr[i]].race=1;
+				}
+			break;
 		}
 		Reset();
 	}
@@ -2945,6 +2956,9 @@ function DissolveModeControl(mode)
 	else if(mode==5) str='二消';
 	else if(mode==6) str='四消';
 	else if(mode==7) str='光暗二消';
+	else if(mode==8) str='限制首消-一般';
+	else if(mode==9) str='限制首消-二消';
+    
 	document.getElementById("dissolveSpan").innerHTML = '消除模式：'+str;
 	Reset();
 }
