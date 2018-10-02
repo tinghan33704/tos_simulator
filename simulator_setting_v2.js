@@ -1,4 +1,4 @@
-/*  Last modified : 2018/9/28 17:39  */
+/*  Last modified : 2018/10/2 11:07  */
 
 /*
     Stone object : {
@@ -2818,6 +2818,32 @@ function SelectModel(model)         // active skill model
                     stone[arr[i]].race=1;
 				}
 			break;
+            case 67:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr==5)
+                    {
+                        stone[i].attr=1;
+                        stone[i].enchanted=1;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                    else if(stone[i].attr==4)
+                    {
+                        stone[i].attr=2;
+                        stone[i].enchanted=1;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                    else if(stone[i].attr==6)
+                    {
+                        stone[i].attr=3;
+                        stone[i].enchanted=1;
+                        stone[i].undissolved=0;
+                        stone[i].petrified=0;
+                    }
+                }
+            break;
 		}
 		Reset();
 	}
