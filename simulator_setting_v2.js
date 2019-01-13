@@ -1,4 +1,4 @@
-/*  Last modified : 2018/11/9 02:43  */
+/*  Last modified : 2019/1/13 16:14  */
 
 /*
     Stone object : {
@@ -164,7 +164,7 @@ var estype1=0, estype2=0;
 var pstype1=0, pstype2=0;
 var break_x=0;
 var round_petri=[];
-var max_page=6;
+var max_page=7;
 
 /*----- pre-processing start -----*/
 
@@ -1104,12 +1104,25 @@ function Dissolve()
 					}
 					head++;
 				}
-				if(count>=4)
-				{
-					for(var i=0; i<last; i++) visit[queue[i]]=d_index;
-					d_index++;
-					set_dissolved++;
-				}
+                if(board[j].attr == 6)
+                {
+                    if(count>=2)
+                    {
+                        for(var i=0; i<last; i++) visit[queue[i]]=d_index;
+                        d_index++;
+                        set_dissolved++;
+                    }
+                }
+                else
+                {
+                    if(count>=4)
+                    {
+                        for(var i=0; i<last; i++) visit[queue[i]]=d_index;
+                        d_index++;
+                        set_dissolved++;
+                    }
+                }
+				
 			}
 		}
 		
@@ -1248,6 +1261,110 @@ function Dissolve()
                 {
                     visit[j*6+i]=1;
                 }
+			}
+		}
+		
+		var last=0, head=0;
+		var set_dissolved=0;
+		var d_index=3;
+		
+		for(var j=0; j<30; j++)							// BFS
+		{
+			if(visit[j]==1 && board[j].attr!=0)
+			{
+				last=0, head=0;
+				var count=0;
+				count++;
+				queue[last++]=j;
+				while(head!=last)
+				{
+					visit[queue[head]]=2;
+					if(queue[head]%6!=0 && board[queue[head]-1].attr!=0 && board[queue[head]-1].attr==board[queue[head]].attr && visit[queue[head]-1]==1)
+					{
+						visit[queue[head]-1]=2;
+						queue[last++]=queue[head]-1;
+						count++;
+					}
+					if(queue[head]%6!=5 && board[queue[head]+1].attr!=0 && board[queue[head]+1].attr==board[queue[head]].attr && visit[queue[head]+1]==1)
+					{
+						visit[queue[head]+1]=2;
+						queue[last++]=queue[head]+1;
+						count++;
+					}
+					if(queue[head]>=6 && board[queue[head]-6].attr!=0 && board[queue[head]-6].attr==board[queue[head]].attr && visit[queue[head]-6]==1)
+					{
+						visit[queue[head]-6]=2;
+						queue[last++]=queue[head]-6;
+						count++;
+					}
+					if(queue[head]<=23 && board[queue[head]+6].attr!=0 && board[queue[head]+6].attr==board[queue[head]].attr && visit[queue[head]+6]==1)
+					{
+						visit[queue[head]+6]=2;
+						queue[last++]=queue[head]+6;
+						count++;
+					}
+					head++;
+				}
+				
+				for(var i=0; i<last; i++) visit[queue[i]]=d_index;
+				d_index++;
+				set_dissolved++;
+			}
+		}
+		
+		if(set_dissolved>0)
+		{
+			StoneDisappear(visit, d_index);
+			dissolve_n++;
+		}
+		else BreakStone(set_dissolved);
+	}
+    
+	else if(dissolve_mode==11)		// water-light two-dissolve mode
+	{
+		var visit=new Array();
+		var queue=new Array();
+		for(var i=0; i<30; i++) visit[i]=(board[i].undissolved==1)?99:0;
+		
+		for(var i=0; i<5; i++)
+		{
+			for(var j=0; j<5; j++)
+			{
+				if(board[i*6+j].attr==1 || board[i*6+j].attr==4 || board[i*6+j].attr==6)
+				{
+					if(CheckNearDissolve(2,i*6+j,i*6+j+1,-1) && undissolve[board[i*6+j].attr%6]==0)
+					{
+						visit[i*6+j]=1, visit[i*6+j+1]=1;
+					}
+				}
+				else if(j<4)
+				{
+					if(CheckNearDissolve(3,i*6+j,i*6+j+1,i*6+j+2) && undissolve[board[i*6+j].attr%6]==0)
+					{
+						visit[i*6+j]=1, visit[i*6+j+1]=1, visit[i*6+j+2]=1;
+					}
+				}
+			}
+			
+		}
+		for(var i=0; i<6; i++)
+		{
+			for(var j=0; j<4; j++)
+			{
+				if(board[j*6+i].attr==1 || board[j*6+i].attr==4 || board[j*6+i].attr==6)
+				{
+					if(CheckNearDissolve(2,j*6+i,j*6+i+6,-1) && undissolve[board[j*6+i].attr%6]==0)
+					{
+						visit[j*6+i]=1, visit[j*6+i+6]=1;
+					}
+				}
+				else if(j<3)
+				{
+					if(CheckNearDissolve(3,j*6+i,j*6+i+6,j*6+i+12) && undissolve[board[j*6+i].attr%6]==0)
+					{
+						visit[j*6+i]=1, visit[j*6+i+6]=1, visit[j*6+i+12]=1;
+					}
+				}
 			}
 		}
 		
@@ -2943,6 +3060,150 @@ function SelectModel(model)         // active skill model
                     }
                 }
             break;
+            case 68:
+                var d_arr = [0,5,6,11,12,17,18,23];
+                var l_arr = [24,25,26];
+                var h_arr = [27,28,29];
+                
+                for(var i=0; i<8; i++)
+                {
+                    stone[d_arr[i]].attr=5;
+                }
+                for(var i=0; i<3; i++)
+                {
+                    stone[l_arr[i]].attr=4;
+                }
+                for(var i=0; i<3; i++)
+                {
+                    stone[h_arr[i]].attr=6;
+                }
+            break;
+			case 69:
+				var num=[0,0,0,15,15,0];
+                var arr=[], attr=[];
+                for(var i=0; i<30; i++) arr.push(i);
+                for(var i=0; i<6; i++)
+                {
+                    for(var j=0; j<num[i]; j++) attr.push(i+1);
+                }
+                
+                arr=randomGenerator(arr, 30);
+                for(var i=0; i<arr.length; i++)
+                {
+                    stone[arr[i]].attr=attr[i];
+                }
+			break;
+			case 70:
+				for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr==6)
+                    {
+                        stone[i].enchanted=1;
+                    }
+                    else if(stone[i].attr==1 || stone[i].attr==2 || stone[i].attr==3)
+                    {
+                        stone[i].race=2;
+                    }
+                }
+			break;
+			case 71:
+                var f_arr = [], uf_arr = [], arr = [];
+				for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 2 && stone[i].undissolved == 0)
+                    {
+                        f_arr.push(i);
+                    }
+                    else
+                    {
+                        uf_arr.push(i);
+                    }
+                }
+                if(f_arr.length >= 9)
+                {
+                    arr = randomGenerator(f_arr, 9);
+                }
+                else
+                {
+                    arr = randomGenerator(uf_arr, 9-f_arr.length);
+                    arr = arr.concat(f_arr);
+                }
+                for(var i=0; i<arr.length; i++)
+                {
+                    stone[arr[i]].attr = 1;
+                    stone[arr[i]].enchanted = 1;
+                }
+			break;
+			case 72:
+                var w_arr = [], arr = [];
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 1 && stone[i].undissolved == 0)
+                    {
+                        w_arr.push(i);
+                    }
+                }
+                if(w_arr.length >= 3)
+                {
+                    arr = randomGenerator(w_arr, 3);
+                }
+                else
+                {
+                    arr = arr.concat(w_arr);
+                }
+                for(var i=0; i<arr.length; i++)
+                {
+                    var four = [1, -1, 6, -6];
+                    for(var j=0; j<4; j++)
+                    {
+                        if(arr[i]+four[j]>=0 && arr[i]+four[j]<30)
+                        {
+                            stone[arr[i]+four[j]].attr = 1;
+                            stone[arr[i]+four[j]].enchanted = 1;
+                        }
+                    }
+                    
+                }
+			break;
+			case 73:
+                var arr=[1,1,6,6,1,1,
+						 6,6,1,1,6,6,
+						 1,1,6,6,1,1,
+						 6,6,1,1,6,6,
+						 1,1,6,6,1,1];
+				for(i=0; i<30; i++)
+				{
+					stone[i].attr=arr[i];
+                    stone[i].enchanted=(stone[i].attr==1)?1:stone[i].enchanted;
+				}
+			break;
+			case 74:
+                var arr = [1,2,3,4,5,1,
+                           1,2,3,4,5,1,
+                           1,2,3,4,5,1,
+                           1,2,3,4,5,1,
+                           6,6,6,6,6,6]
+                for(var i=0; i<30; i++)
+                {
+                    stone[i].attr = arr[i];
+                }
+			break;
+			case 75:
+                for(var i=0; i<6; i++)
+                {
+                    stone[i].attr = 3;
+                    stone[i].enchanted = 1;
+                }
+			break;
+			case 76:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 4)
+                    {
+                        stone[i].race = 4;
+                    }
+                }
+			break;
 		}
 		Reset();
 	}
@@ -3075,15 +3336,16 @@ function DissolveModeControl(mode)
 	var str;
 	if(mode==0) str='一般';
 	else if(mode==1) str='三消';
-	else if(mode==2) str='火二消';
-	else if(mode==3) str='木二消';
-	else if(mode==4) str='火木二消';
+	else if(mode==2) str='火心二消';
+	else if(mode==3) str='木心二消';
+	else if(mode==4) str='火木心二消';
 	else if(mode==5) str='二消';
-	else if(mode==6) str='四消';
+	else if(mode==6) str='屬性四消-心二消';
 	else if(mode==7) str='光暗二消';
 	else if(mode==8) str='限制首消-一般';
 	else if(mode==9) str='限制首消-二消';
 	else if(mode==10) str='一消';
+	else if(mode==11) str='水光心二消';
     
 	document.getElementById("dissolveSpan").innerHTML = '消除模式：'+str;
 	Reset();
