@@ -1,4 +1,4 @@
-/*  Last modified : 2019/1/13 16:14  */
+/*  Last modified : 2019/1/28 13:37  */
 
 /*
     Stone object : {
@@ -3927,7 +3927,8 @@ function GetURLCode()
     str=str.concat("&set=");         // setting
     str=str.concat(parseInt((move_time/1000)/10));
     str=str.concat(parseInt((move_time/1000)%10));
-    str=str.concat(dissolve_mode);
+    str=str.concat(parseInt(dissolve_mode/10));
+    str=str.concat(parseInt(dissolve_mode%10));
     str=str.concat(move_mode);
     
     if(path_record[0]!=-1)          // path record read
@@ -4048,11 +4049,11 @@ function LoadSetting()
     var str=location.search;
 	var res=str.split("&");
     
-    var ss=res[7].slice(4, 8);
+    var ss=res[7].slice(4, 9);
     var time_c=parseInt(ss.charAt(0))*10+parseInt(ss.charAt(1));
-    var dis_c=parseInt(ss.charAt(2));
-    var move_c=parseInt(ss.charAt(3));
-    if(time_c<=0 || time_c>30 || dis_c<0 || dis_c>5 || move_c<0 || move_c>1)
+    var dis_c=parseInt(ss.charAt(2))*10+parseInt(ss.charAt(3));
+    var move_c=parseInt(ss.charAt(4));
+    if(time_c<=0 || time_c>30 || dis_c<0 || dis_c>11 || move_c<0 || move_c>1)
     {
         alert("[ERROR]設定資訊異常，請確認提供的網址是否有誤");
     }
@@ -4061,9 +4062,9 @@ function LoadSetting()
         MoveTimeControl(time_c);
         document.getElementById("timeSlider").value=time_c;
         DissolveModeControl(dis_c);
-        document.getElementById("dissolveSelector").selectedIndex=dis_c;
+        document.getElementById("dissolveSelector").value=dis_c;
         MoveModeControl(move_c);
-        document.getElementById("moveSelector").selectedIndex=move_c;
+        document.getElementById("moveSelector").value=move_c;
     }
 }
 
