@@ -1654,7 +1654,7 @@ function Reset()
 	
 	var c = document.getElementById("board_canvas");
 	var ctx = c.getContext("2d");
-	ctx.clearRect(0,0,492,430);
+	ctx.clearRect(0,0,504,420);
 	
 	for(var i=0; i<30; i++) corrosion[i]=-1;
 	for(var i=0; i<6; i++) fire[i]=-1, heal[i]=-1;
@@ -1727,8 +1727,8 @@ function LayerDisplay()
 	document.getElementById('board_canvas').style.display='block';
 	for(var i=1; i<=step_cnt; i++)
 	{
-		var dx=41+82*parseInt((path_record[i]-1)%6);
-		var dy=43+86*parseInt((path_record[i]-1)/6);
+		var dx=41+84*parseInt((path_record[i]-1)%6);
+		var dy=43+84*parseInt((path_record[i]-1)/6);
 		var c = document.getElementById("board_canvas");
 		var ctx = c.getContext("2d");
 		ctx.beginPath();
@@ -1740,10 +1740,10 @@ function LayerDisplay()
 	
 	for(var i=1; i<=step_cnt; i++)
 	{
-		var dx=41+82*parseInt((path_record[i]-1)%6);
-		var dy=43+86*parseInt((path_record[i]-1)/6);
-		var dpx=41+82*parseInt((path_record[i-1]-1)%6);
-		var dpy=43+86*parseInt((path_record[i-1]-1)/6);
+		var dx=41+84*parseInt((path_record[i]-1)%6);
+		var dy=43+84*parseInt((path_record[i]-1)/6);
+		var dpx=41+84*parseInt((path_record[i-1]-1)%6);
+		var dpy=43+84*parseInt((path_record[i-1]-1)/6);
 		var c = document.getElementById("board_canvas");
 		var ctx = c.getContext("2d");
 		ctx.moveTo(dpx,dpy);
@@ -1753,8 +1753,8 @@ function LayerDisplay()
 		ctx.stroke();
 	}
 	
-	var dx=41+82*parseInt((path_record[0]-1)%6)-25;
-	var dy=43+86*parseInt((path_record[0]-1)/6)+25;
+	var dx=41+84*parseInt((path_record[0]-1)%6)-25;
+	var dy=43+84*parseInt((path_record[0]-1)/6)+25;
 	var c = document.getElementById("board_canvas");
 	var ctx = c.getContext("2d");
 	
