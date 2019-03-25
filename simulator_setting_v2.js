@@ -1,4 +1,4 @@
-/*  Last modified : 2019/1/28 13:37  */
+/*  Last modified : 2019/3/25 10:46  */
 
 /*
     Stone object : {
@@ -7,7 +7,7 @@
         sp          [ 0:no   1:frozen   2:weathered   3:locked   4:petrified   5:undissolvable],
         undissolved [ 0:no   1:yes ],
         petrified   [ 1:layer-1   2:layer-2   3:layer-3],
-        race        [ 0:N/A   1:god   2:beast   3:human   4:elf   5:dragon   6:demon ]
+        race        [ 0:N/A   1:god   2:beast   3:human   4:elf   5:dragon   6:demon   7:mechanic ]
     }
 */
 function Stone(attr, enchanted, sp, undissolved, petrified, race)
@@ -105,6 +105,16 @@ var stone_src=[    './img/stone_n.png',
 				   './img/stone_w_de.png', './img/stone_f_de.png', './img/stone_e_de.png', './img/stone_l_de.png', './img/stone_d_de.png', './img/stone_h_de.png',
 				   './img/stone_w_en_de.png', './img/stone_f_en_de.png', './img/stone_e_en_de.png', './img/stone_l_en_de.png', './img/stone_d_en_de.png', './img/stone_h_en_de.png',
 				   './img/stone_w_de.png', './img/stone_f_de.png', './img/stone_e_de.png', './img/stone_l_de.png', './img/stone_d_de.png', './img/stone_h_de.png',
+				   './img/frozen.png', './img/petrified_1.png', './img/petrified_2.png', './img/petrified_3.png',
+                   
+				   /* mechanic rune */
+                   './img/stone_w_m.png', './img/stone_f_m.png', './img/stone_e_m.png', './img/stone_l_m.png', './img/stone_d_m.png', './img/stone_h_m.png',
+				   './img/stone_w_en_m.png', './img/stone_f_en_m.png', './img/stone_e_en_m.png', './img/stone_l_en_m.png', './img/stone_d_en_m.png', './img/stone_h_en_m.png',
+				   './img/stone_w_m.png', './img/stone_f_m.png', './img/stone_e_m.png', './img/stone_l_m.png', './img/stone_d_m.png', './img/stone_h_m.png',
+				   './img/stone_w_en_m.png', './img/stone_f_en_m.png', './img/stone_e_en_m.png', './img/stone_l_en_m.png', './img/stone_d_en_m.png', './img/stone_h_en_m.png',
+				   './img/stone_w_m.png', './img/stone_f_m.png', './img/stone_e_m.png', './img/stone_l_m.png', './img/stone_d_m.png', './img/stone_h_m.png',
+				   './img/stone_w_en_m.png', './img/stone_f_en_m.png', './img/stone_e_en_m.png', './img/stone_l_en_m.png', './img/stone_d_en_m.png', './img/stone_h_en_m.png',
+				   './img/stone_w_m.png', './img/stone_f_m.png', './img/stone_e_m.png', './img/stone_l_m.png', './img/stone_d_m.png', './img/stone_h_m.png',
 				   './img/frozen.png', './img/petrified_1.png', './img/petrified_2.png', './img/petrified_3.png'];
 
 var normal_list=[ 0,
@@ -164,7 +174,7 @@ var estype1=0, estype2=0;
 var pstype1=0, pstype2=0;
 var break_x=0;
 var round_petri=[];
-var max_page=7;
+var max_page=8;
 
 /*----- pre-processing start -----*/
 
@@ -1830,7 +1840,7 @@ function Edit(id)
             board[id-1].race=stone[id-1].race=0;
 			document.getElementById('img'+id).src=getStoneSrc(board[id-1]);
 		}
-		else if(edit_index>=13 && edit_index<=18)   // race stone
+		else if(edit_index>=13 && edit_index<=19)   // race stone
 		{
 			board[id-1].sp=stone[id-1].sp=0;
 			board[id-1].undissolved=stone[id-1].undissolved=0;
@@ -3204,6 +3214,177 @@ function SelectModel(model)         // active skill model
                     }
                 }
 			break;
+			case 77:
+                var arr = [];
+                for(var i=0; i<30; i++) arr[i] = i;
+                arr = randomGenerator(arr, 9);
+                for(var i=0; i<9; i++)
+                {
+                    stone[arr[i]].attr = (i%3)+4;
+                    stone[arr[i]].enchanted = 1;
+                    stone[arr[i]].race = 1;
+                }
+			break;
+			case 78:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 4)
+                    {
+                        stone[i].enchanted = 1;
+                        stone[i].race = 3;
+                    }
+                    else stone[i].attr = 4;
+                }
+			break;
+			case 79:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 2 || stone[i].attr == 6)
+                    {
+                        stone[i].attr = 6;
+                        stone[i].enchanted = 1;
+                    }
+                    else if(stone[i].attr == 1 || stone[i].attr == 5)
+                    {
+                        stone[i].attr = 1;
+                        stone[i].enchanted = 1;
+                    }
+                }
+			break;
+			case 80:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 5 || stone[i].attr == 6)
+                    {
+                        stone[i].attr = 6;
+                        stone[i].enchanted = 1;
+                    }
+                    else if(stone[i].attr == 2 || stone[i].attr == 4)
+                    {
+                        stone[i].attr = 4;
+                        stone[i].enchanted = 1;
+                    }
+                }
+			break;
+			case 81:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 1)
+                    {
+                        stone[i].attr = 1;
+                        stone[i].enchanted = 1;
+                        stone[i].race = 1;
+                    }
+                    else if(stone[i].attr == 2 || stone[i].attr == 6)
+                    {
+                        stone[i].attr = 1;
+                        stone[i].enchanted = 1;
+                    }
+                }
+			break;
+			case 82:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 2)
+                    {
+                        stone[i].attr = 2;
+                        stone[i].enchanted = 1;
+                        stone[i].race = 1;
+                    }
+                    else if(stone[i].attr == 3 || stone[i].attr == 6)
+                    {
+                        stone[i].attr = 2;
+                        stone[i].enchanted = 1;
+                    }
+                }
+			break;
+			case 83:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 3)
+                    {
+                        stone[i].attr = 3;
+                        stone[i].enchanted = 1;
+                        stone[i].race = 1;
+                    }
+                    else if(stone[i].attr == 1 || stone[i].attr == 6)
+                    {
+                        stone[i].attr = 3;
+                        stone[i].enchanted = 1;
+                    }
+                }
+			break;
+			case 84:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 4)
+                    {
+                        stone[i].attr = 4;
+                        stone[i].enchanted = 1;
+                        stone[i].race = 1;
+                    }
+                    else if(stone[i].attr == 5 || stone[i].attr == 6)
+                    {
+                        stone[i].attr = 4;
+                        stone[i].enchanted = 1;
+                    }
+                }
+			break;
+			case 85:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 5)
+                    {
+                        stone[i].attr = 5;
+                        stone[i].enchanted = 1;
+                        stone[i].race = 1;
+                    }
+                    else if(stone[i].attr == 4 || stone[i].attr == 6)
+                    {
+                        stone[i].attr = 5;
+                        stone[i].enchanted = 1;
+                    }
+                }
+			break;
+			case 86:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 2 || stone[i].attr == 3 || stone[i].attr == 5)
+                    {
+                        stone[i].enchanted = 1;
+                        stone[i].race =7;
+                    }
+                }
+			break;
+			case 86.1:
+                for(var i=0; i<30; i++)
+                {
+                    stone[i].enchanted = 1;
+                    stone[i].race =7;
+                }
+			break;
+			case 87:
+                var arr = [4,4,4,4,4,4,
+                           4,5,5,5,5,4,
+                           4,5,5,5,5,4,
+                           4,5,5,5,5,4,
+                           4,4,4,4,4,4];
+                for(var i=0; i<30; i++)
+                {
+                    stone[i].attr = arr[i];
+                    if(arr[i] == 4) stone[i].enchanted = 1;
+                }
+			break;
+			case 88:
+                for(var i=0; i<30; i++)
+                {
+                    if(stone[i].attr == 6)
+                    {
+                        stone[i].attr = 4;
+                        stone[i].race =7;
+                    }
+                }
+			break;
 		}
 		Reset();
 	}
@@ -3319,6 +3500,18 @@ function ChangeCharacter(id)
             document.getElementById("char54").style.display="inline";
             document.getElementById("change54.1").style.display="none";
             document.getElementById("change54").style.display="inline";
+        break;
+        case 86:
+            document.getElementById("char86").style.display="none";
+            document.getElementById("char86.1").style.display="inline";
+            document.getElementById("change86").style.display="none";
+            document.getElementById("change86.1").style.display="inline";
+        break;
+        case 86.1:
+            document.getElementById("char86.1").style.display="none";
+            document.getElementById("char86").style.display="inline";
+            document.getElementById("change86.1").style.display="none";
+            document.getElementById("change86").style.display="inline";
         break;
     }
 }
@@ -3993,8 +4186,8 @@ function LoadURLCode()
 	for(var i=0; i<15; i++)
 	{
 		var idx=GetRaceIndex(ss[i]);
-		board[i*2].race=stone[i*2].race=Math.floor(idx/7);
-		board[i*2+1].race=stone[i*2+1].race=idx%7;
+		board[i*2].race=stone[i*2].race=Math.floor(idx/8);
+		board[i*2+1].race=stone[i*2+1].race=idx%8;
 	}
     
     LoadEnemySkill();
@@ -4181,8 +4374,10 @@ function GetRaceCode(at1, at2)
 			 "a","b","c","d","e","f","g","h","i","j",
 			 "k","l","m","n","o","p","q","r","s","t",
 			 "u","v","w","x","y","z","A","B","C","D",
-             "E","F","G","H","I","J","K","L","M"];
-	return arr[at1*7+at2];
+             "E","F","G","H","I","J","K","L","M","N",
+             "O","P","Q","R","S","T","U","V","W","X",
+             "Y","Z","+","-"];
+	return arr[at1*8+at2];
 }
 
 function GetRaceIndex(ch)
@@ -4191,8 +4386,10 @@ function GetRaceIndex(ch)
 			 "a","b","c","d","e","f","g","h","i","j",
 			 "k","l","m","n","o","p","q","r","s","t",
 			 "u","v","w","x","y","z","A","B","C","D",
-             "E","F","G","H","I","J","K","L","M"];
-	for(var i=0; i<49; i++)
+             "E","F","G","H","I","J","K","L","M","N",
+             "O","P","Q","R","S","T","U","V","W","X",
+             "Y","Z","+","-"];
+	for(var i=0; i<64; i++)
 	{
 		if(ch==arr[i]) return i;
 	}
